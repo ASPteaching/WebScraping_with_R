@@ -7,7 +7,7 @@ output:
     fig_width: 7
     fig_height: 6
 css: myStyles.css
-footer: "Introduction"
+footer: "Parsing HTML"
 keep_md: true
 highlight: pygments
 ---
@@ -26,10 +26,12 @@ What is *parsing*
 =================
 - Parsing involves *breaking down a text into its component parts of speech with an explanation of the form, function, and syntactic relationship of each part*. [Wikipedia](https://en.wikipedia.org/wiki/Parsing).
 - The difference between reading and parsing is not just a semantic one: 
-- reading functions *do not care to understand the formal grammar that underlies HTML* but merely recognize the sequence of symbols included in the HTML file.
+    + **reading** is made using (reading) functions that *do not care to understand the formal grammar that underlies HTML* but merely recognize the sequence of symbols included in the HTML file.
+    + **parsing** is made employing programs that understand the special meaning of the mark-up structure and reconstructs the implied HTML hierarchy of an HTML file within some R-specified structure.
 
-Reading an HTML file from the web
-=================================
+
+Getting data (1): **Reading** an HTML file
+==========================================
 
 - We can read a file from the web using `readlines()` function:
 
@@ -43,6 +45,15 @@ head(fortunes, n=10)
     + maps every line of the input file to a separate value in a character vector creating a flat representation of the document.
     + is *agnostic* about the different tag elements (name, attribute, values, etc.) and produces results that do not reflect the document’s internal hierarchy *as implied by the nested tags* in any sensible way.
     
+Getting data (2): Parsing an HTML file
+=======================================
+- To achieve a useful representation of HTML files, we need to employ a program that 
+    + understands the special meaning of the markup structures and 
+    + reconstructs the implied hierarchy of an HTML file within some R-specific data structure.
+- This representation is also referred to as the *Document Object Model (DOM)*.
+    + A Document Object Model is a queryable data object that we can build from
+any HTML file and is useful for further processing of document parts.
+
 A distraction: HTML tree structure
 ==================================
 - If one ignores the \<!DOCTYPE html \> tag it is easy to see that an HTML document can be seen as a hierarchichal collection of tags which contain distinct elements.
@@ -54,16 +65,6 @@ A distraction: HTML tree structure
 - Hint: Copy the source code of the `fortunes.html` document and paste it in [This viewer](https://software.hixie.ch/utilities/js/live-dom-viewer/)
 
 
-Parsing an HTML file from the web
-=================================
-
-- To achieve a useful representation of HTML files, we need to employ a program that 
-    + understands the special meaning of the markup structures and 
-    + reconstructs the implied hierarchy of an HTML file within some R-specific data structure.
-- This representation is also referred to as the *Document Object Model (DOM)*.
-    + A Document Object Model is a queryable data object that we can build from
-any HTML file and is useful for further processing of document parts.
-
 DOM-style parsers
 ==================
 - Transformation from HTML code to the DOM is the task of a *DOM-style parser*. 
@@ -72,17 +73,45 @@ DOM-style parsers
     + [XML package](https://cran.r-project.org/web/packages/XML/index.html) by Duncan Temple and Debbie Nolan,
     + [rvest package](https://github.com/hadley/rvest) by Hadley Wickam,
     + and a few others that one can see at [CRAN Task View: Web Technologies and Services](https://cran.r-project.org/web/views/WebTechnologies.html).
+    + See also the table and introduction at: (An R web crawler and scraper)[https://github.com/salimk/Rcrawler]
+
+Scrapping web pages (I): Using the `XML` package
+===============================================
+
+- The `XML` package provides an interface to `libxml2` a powerful parsing library written in C.
+- The package is designed for two main purposes
+    + parsing xml / html content
+    + writing xml / html content (*we wonn't cover this*)
+    
+What can we do with "XML"?
+===========================
+
+- We cover 4 major types of tasks that can be performed with "XML"
+
+1. parsing xml / html content
+2. obtaining descriptive information about parsed contents
+3. navigating the tree structure (ie *accessing its components*)
+4. querying and extracting data from parsed contents
+
+- XML package can be used for both XML and HTML parsing. 
+- We will see how to use it, later in the course, when we work with XML files.
 
 
-Scraping the web with `rvest`
-=============================
+Scraping web pages (II): Using the `rvest` package
+===================================================
+
 - `rvest`is an R package written by the R guru [Hadley Wickam](http://hadley.nz/).
 - It is intended to facilitate the process of acquiring data from web pages (not "from the web") and parsing the result into R.
 - rvest is inspired to work with [magrittr](https://github.com/tidyverse/magrittr)
+- See more information on `rvest` at: 
+    + [rvest package on Github](https://github.com/hadley/rvest)
+    + [rvest documentation on CRAN](http://cran.r-project.org/web/packages/rvest/index.html)
+    + [rstudio blog on rvest](http://blog.rstudio.org/2014/11/24/rvest-easy-web-scraping-with-r/)
 
-With `rvest` one can do things such as:
+Basic rvest capabilities
 =======================================
-+ Create an html document from a url, a file on disk or a string containing html with `read_html()`.
+
++ Get the data: Create an html document from a url, a file on disk or a string containing html with `read_html()`.
 + Select parts of an html document using css selectors: `html_nodes()` (Read vignette with: `vignette("selectorgadget")` after installing and loading rvest in R.
 + Extract components with 
     - `html_tag()` (the name of the tag),

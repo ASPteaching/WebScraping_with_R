@@ -7,7 +7,7 @@ output:
     toc: true
 ---
 
-This case study has been adapted from chapter 1 of the book [Automated Data Collection with R](http://www.r-datacollection.com/) (ADCR, from now on)
+This case study has been adapted from chapter 1 of the book [Automated Data Collection with R](http://www.r-datacollection.com/) (ADCR, from now on). Its goal is not to be exhaustive but providing a first example of a situation where we obtain and analyze data from the web.
 
 ```{r setup, include=FALSE, echo=FALSE}
 require(knitr)
@@ -38,7 +38,7 @@ If there are any problems the page can be saved into a local file and scraping p
 # heritage_parsed <- htmlParse("https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger", encoding = "UTF-8")
 
 # parsing from locally stored HTML file
-heritage_parsed <- htmlParse("worldheritagedanger.htm")
+heritage_parsed <- htmlParse("Exercises/worldheritagedanger.htm")
 ```
 
 ## Parsing the object

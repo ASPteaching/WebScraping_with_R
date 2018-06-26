@@ -1,0 +1,123 @@
+---
+title: "Exercises on regular expressions"
+output: 
+  html_document:
+    toc: true
+    float: true
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+require(knitr)
+# include this code chunk as-is to set options
+opts_chunk$set(comment = NA, prompt = TRUE, tidy = FALSE, fig.width = 7, fig.height = 7, echo = FALSE, message = FALSE, warning =FALSE, cache=FALSE, print=FALSE, results=FALSE, include=FALSE)
+Sys.setlocale("LC_TIME", "C")
+```
+
+```{r, echo=FALSE, message=FALSE}
+# load packages
+if (!require(stringr)) install.packages("stringr", dep=TRUE)
+require(stringr)
+```
+
+## Exercise 1
+
+- Create a variable called `text1` and populate it with the value “The current year is 2017”
+- Create a variable called `my_pattern` and implement the required pattern for finding *any digit* in the variable `text1`.
+- Use function `grepl` to verify if there is a digit in the string variable.
+```{r exercise1}
+text1 <- "The current year is 2017"
+my_pattern <- "[A-z]*[0-9]+[A-z]*"
+grepl(my_pattern,text1)
+```
+
+
+## Exercise 2
+
+- Use function `gregexpr` to find all the positions in `text1` where there is a digit.
+- Place the results in a variable called *string_position*
+- Can you obtain the same result using a function from the `stringr` package?
+```{r exercise2}
+string_position <- gregexpr(my_pattern,text1)
+string_position[[1]][1:length(string_position[[1]])]
+require(stringr)
+str_locate(text1, my_pattern)
+```
+
+## Exercise 3
+
+- Create a variable called `my_pattern` and implement the required pattern for finding **one digit** and **one uppercase alphanumeric** character, in variable `text1`. HINT: combine predefined classes in the regex pattern.
+- Use function `grepl` or its `stringr` equivalent to verify if the searched pattern exists on the string.
+```{r exercise3}
+my_pattern <- "[[:upper:][:digit:]]"
+grepl(my_pattern,text1)
+str_locate_all(text1, my_pattern)
+```
+
+## Exercise 4
+- Use function `regexpr` to find the position of the first space in `text1`.
+- Place the results in a variable called `first_space` and Use function `grepl` or its `stringr` equivalent to verify if the searched pattern exists on the string.
+```{r exercise4}
+my_pattern <- "[[:blank:]]"
+first_space <- regexpr(my_pattern,text1)
+first_space[[1]][1]
+str_locate(text1, my_pattern)
+```
+
+
+## Exercise 5
+- Create a pattern that checks in `text1` if there is a lowercase character, followed by any character and then by a digit.
+```{r exercise5}
+my_pattern <- "[[:lower:]].[[:digit:]]"
+grepl(my_pattern,text1)
+str_detect(text1, my_pattern)
+```
+
+
+## Exercise 6
+- Find the starting position of the above string. Place the results in a variable called `string_pos2`
+```{r exercise6}
+string_pos2 <- str_locate(text1, my_pattern)
+string_pos2[1]
+string_pos2 <- gregexpr(my_pattern,text1)[[1]][1]
+string_pos2
+```
+
+## Exercise 7
+- Find the following pattern: one space followed by two lowercase letters and one more space.
+- Use a function that returns the starting point of the found string and place its result in `string_pos3`.
+```{r exercise7}
+my_pattern <- "\\s[a-z][a-z]\\s"
+string_pos3 <- str_locate(text1, my_pattern)
+string_pos3
+string_pos3 <- gregexpr(my_pattern,text1)[[1]][1]
+string_pos3
+```
+
+## Exercise 8
+- Using the sub function, replace the pattern found on the previous exercice by the string " is not ""
+- Place the resulting string in `text2` variable.
+```{r exercise8}
+text2 <- sub(my_pattern," is not ",text1)
+text2
+text2 <- str_replace(text1, my_pattern," is not ")
+text2
+```
+
+## Exercise 9
+- Find in `text2` the following pattern: Four digits starting at the end of the string.
+- Use a function that returns the starting point of the found string and place its result in `string_pos4`.
+```{r exercise9}
+my_pattern <- "\\d{4}$"
+string_pos4 <- gregexpr(my_pattern,text2)[[1]][1]
+string_pos4
+string_pos4 <- str_locate(text2, my_pattern)
+string_pos4
+```
+
+## Exercise 10
+- Using the `substr` function, and according to the position ofthe string found in the previous excercise, extract the first
+two digits found at the end of `text2`.
+```{r exercise10}
+substr(text2,start = string_pos4,string_pos4+1)
+```
+
