@@ -177,15 +177,30 @@ poster <- lego_movie %>%
 poster
 ```
 
+It's your turn now!
+====================
+- Write a script to find out which actor appears in  higher number of Star War movies.
+
+- Hint: The idea is similar to the previous exercise but with a litlle more work you can 
+
+1. Start in a page that gives you access to the list of Star Wars Films (try googling "Star Wars IMDB")
+2. From here write a function to extract the authors list from an IMDB whose URL is providd
+3. Apply the function to the URLs list and
+4. Tabulate or plot
+
+
 To learn more ...
 ==================
-- [A more exhaustive scrapping of the same data](https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/) 
+- Additional tutorials on web scrapping based on the `rvest` package:
+    + http://zevross.com/blog/2015/05/19/scrape-website-data-with-the-new-r-package-rvest/
+    + https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/
+    + https://www.datacamp.com/community/tutorials/r-web-scraping-rvest
 - The `magrittr` package for executing commands in pipes: [magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 - The `rvest` package: [rvest](https://github.com/hadley/rvest)
 - About selectorgadgets
     + [Selectorgadget vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html)
     + [Selectorgadget.com: The site](http://selectorgadget.com/)
-
+- [A comparative between `XML` and `rvest`](https://www.r-bloggers.com/old-is-new-xml-and-rvest/)
 - Scraping exercises: Go to this page for scraping exercises (with solutions, although some of them don't work due to changes in web sites!)
     + [http://www.r-exercises.com/2016/12/20/web-scraping-exercises/](http://www.r-exercises.com/2016/12/20/web-scraping-exercises/)
     

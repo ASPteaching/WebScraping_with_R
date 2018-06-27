@@ -121,3 +121,19 @@ two digits found at the end of `text2`.
 substr(text2,start = string_pos4,string_pos4+1)
 ```
 
+## Exercise 11
+
+- File "LipidsData.csv" contains the values obtained in a metabolomics studies on lipidic concentrations in HIV patients.
+- The researchers who provided us with the data for the analysis also need to extract some information from the lipid names and give us this information.
+    + The nomenclature is easy: We wish you to extract
+        - the number of carbon atoms (the first number, before the two points-) 
+        - vs. number of double bonds (the second number -after two points-) and also 
+        - the lipid family (last part of the name that is not a number.
+    + Example
+        - C24Cer 24 carbons; 0 double bonds, family name="Cer"
+        - C24: 1Cer (a) 24 carbons; 1 double bonds, family name="Cer"
+        - C24: 2Cer 24 carbons; Two double bonds, family name="Cer"
+        
+- Read the file into R and prepare a script that parses the names and writes another file with the information desired.
+
+

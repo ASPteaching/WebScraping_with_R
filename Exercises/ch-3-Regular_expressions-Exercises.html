@@ -318,6 +318,7 @@ $(document).ready(function () {
 <li><a href="#exercise-8">Exercise 8</a></li>
 <li><a href="#exercise-9">Exercise 9</a></li>
 <li><a href="#exercise-10">Exercise 10</a></li>
+<li><a href="#exercise-11">Exercise 11</a></li>
 </ul>
 </div>
 
@@ -388,6 +389,28 @@ $(document).ready(function () {
 <h2>Exercise 10</h2>
 <ul>
 <li>Using the <code>substr</code> function, and according to the position ofthe string found in the previous excercise, extract the first two digits found at the end of <code>text2</code>.</li>
+</ul>
+</div>
+<div id="exercise-11" class="section level2">
+<h2>Exercise 11</h2>
+<ul>
+<li>File “LipidsData.csv” contains the values obtained in a metabolomics studies on lipidic concentrations in HIV patients.</li>
+<li>The researchers who provided us with the data for the analysis also need to extract some information from the lipid names and give us this information.
+<ul>
+<li>The nomenclature is easy: We wish you to extract
+<ul>
+<li>the number of carbon atoms (the first number, before the two points-)</li>
+<li>vs. number of double bonds (the second number -after two points-) and also</li>
+<li>the lipid family (last part of the name that is not a number.</li>
+</ul></li>
+<li>Example
+<ul>
+<li>C24Cer 24 carbons; 0 double bonds, family name=“Cer”</li>
+<li>C24: 1Cer (a) 24 carbons; 1 double bonds, family name=“Cer”</li>
+<li>C24: 2Cer 24 carbons; Two double bonds, family name=“Cer”</li>
+</ul></li>
+</ul></li>
+<li>Read the file into R and prepare a script that parses the names and writes another file with the information desired.</li>
 </ul>
 </div>
 

@@ -40,16 +40,16 @@ When would one need regular expressions?
 A simple example (1): files and datasets
 ==========================================
 - We have selected a few files from:from [https://github.com/STAT545-UBC/STAT545-UBC.github.io](https://github.com/STAT545-UBC/STAT545-UBC.github.io), where you can find a good tutorial on regular expressions, and have compressed them into a zip file: `regexExample1.zip`.
-- Download the file and extract it into a folder named `regexExample1`.
-- First, start getting the list of file names with list.files(), and loading the `Gapminder` dataset into R.
+- We wish to locate all the files which deal with the `dplyr` package. We assume that these are file with the string "dplyr" inside their name.
+- To do this we proceed as follows:
+
+1. List all files in the folder where you uncompressed `"regexEXample1.zip"`
 
 ```{r}
-require(stringr)
 setwd("regexExample1")
 files <- list.files()
-head(files)
-gDat <- read.delim("gapminderDataFiveYear.txt")
-str(gDat)
+setwd("..")
+# head(files)
 ```
 
 A simple example (2): File selection
@@ -151,6 +151,7 @@ Syntax (1): Exact character matching
 - At the most basic level *characters match characters*, even in regular expressions. 
 - Thus, extracting a substring of a string will yield itself if present:
 ```{r}
+require(stringr)
 str_extract(example.obj, "small")
 ```
 Otherwise, the function would return a missing value:
@@ -208,6 +209,8 @@ Syntax (3): Escape sequences
 - For example, let's say you specify your pattern with single quotes and you want to find countries with the single quote `'`. 
 - You would have to "escape" the single quote in the pattern, by preceding it with `\`, so it's clear it is not part of the string-specifying machinery: 
 ```{r}
+gDat <- read.delim("regexExample1/gapminderDataFiveYear.txt")
+str(gDat)
 grep('\'', levels(gDat$country), value = TRUE)
 ```
 
@@ -360,12 +363,13 @@ Functions in `stringr` vs in functions in  base R
 
 Resources
 ==========
-
-  * Regular expression in R [official document](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html).  
-  * Perl-like regular expression: regular expression in perl [manual](http://perldoc.perl.org/perlre.html#Regular-Expressions).   
-  * [`qdapRegex` package](http://trinkerrstuff.wordpress.com/2014/09/27/canned-regular-expressions-qdapregex-0-1-2-on-cran/): a collection of handy regular expression tools, including handling abbreviations, dates, email addresses, hash tags, phone numbers, times, emoticons, and URL etc.   
-  * There are some online tools to help learn, build and test regular expressions. On these websites, you can simply paste your test data and write regular expression, and matches will be highlighted.   
-  + [regexpal](http://regexpal.com/)    
-  + [RegExr](http://www.regexr.com/)   
+- [A Rstudio cheatsheet on string manipulation](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf)
+- [A basic cheatsheet on regular expressions](https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf)
+- [Official document about Regular expression in R](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html).  
+- Perl-like regular expression: regular expression in perl [manual](http://perldoc.perl.org/perlre.html#Regular-Expressions).   
+- [`qdapRegex` package](http://trinkerrstuff.wordpress.com/2014/09/27/canned-regular-expressions-qdapregex-0-1-2-on-cran/): a collection of handy regular expression tools, including handling abbreviations, dates, email addresses, hash tags, phone numbers, times, emoticons, and URL etc.   
+- There are some online tools to help learn, build and test regular expressions. On these websites, you can simply paste your test data and write regular expression, and matches will be highlighted.   
+    + [regexpal](http://regexpal.com/)    
+    + [RegExr](http://www.regexr.com/)   
 
 
