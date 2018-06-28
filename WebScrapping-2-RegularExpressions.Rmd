@@ -11,6 +11,11 @@ footer: "Regular expressions"
 keep_md: true
 ---
 
+```{r setLicense, child = 'license.Rmd'}
+```
+
+```{r disclaimer, child = 'disclaimer.Rmd'}
+```
 
 Introduction
 =============

@@ -12,6 +12,12 @@ keep_md: true
 highlight: pygments
 ---
 
+```{r setLicense, child = 'license.Rmd'}
+```
+
+```{r disclaimer, child = 'disclaimer.Rmd'}
+```
+
 We need data, ... and the web is full of it
 ===========================================
 

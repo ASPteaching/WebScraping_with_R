@@ -14,6 +14,12 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r setLicense, child = 'license.Rmd'}
+```
+
+```{r disclaimer, child = 'disclaimer.Rmd'}
+```
+
 ```{r setup, include=FALSE}
 require(knitr)
 # include this code chunk as-is to set options
