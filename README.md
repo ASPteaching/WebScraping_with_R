@@ -1,15 +1,8 @@
 # WebScraping with R
 
-- This site contains the materials for a course on getting data from the web using R.
-- The course is organized in the following topics
+This site contains the materials for 
 
-
-0. Presentation. Introduction to web technologies and course structure.
-1. The basics: HTML and CSS
-2. Parsing HTML with `rvest` and `selectorgadget.`
-3. Text extraction with regular expressions.
-4. Scrapping Twitter  for Sentiment Analysis.
-5. XML basics. Parsing XML.
-6. Handling JSON data.
-7. Using APIs to get data.
+- A course on getting data from the web using R that I taught in the MESIO Summer school 2018
+- A short talk on web scraping to be given at the "Young STatisticians Meeting" in the IBC2018 Conference in Barcelona.
+- Some materials and links,
 
