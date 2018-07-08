@@ -82,6 +82,53 @@ Understanding web browsing (3)
 - Parser tools extract information from the response sent by the server to the browser
 
 
+The R scraping toolkit
+===========================
+
+- Comparison of some popular R packages for data collection.
+
+<div align="center"> 
+ <img src="images/TheRscrapingToolkit.png"  width="90%"style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
+Example (1): Scraping 
+============================
+
+- The "simplest" situation: 
+1. Access a web site and select one or more pages
+     - Either download the pages or work directly on the site
+2. Locate the information desired in the page
+3. Extract it into an R object
+
+- This can be done with different packages. 
+- A common choice : Hadley Wickam's `rvest` 
+    
+Example (2): Sentiment Analysis from Tweeter 
+============================================
+
+- Information retrieval can be made in raw form or through an Application Programming Interface (API)
+- There exist many APIs for retrieving data from "typical" places such as Tweeter, Amazon, linkedin, etc.
+    + APIs require an authorization/user identification
+
+- A typical information extraction process may be the following
+1. Extract tweets and followers from the Twitter website with R
+and the `twitteR` package.
+2. Clean text by removing punctuations, numbers, hyperlinks and stop words.
+- This will be followed by *a variety* of possible analyses:
+3. Build a term-document matrix and make a Word Cloud.
+4. Analyse topics with the `topicmodels` package.
+5. Analyse sentiment with the `sentiment140` package.
+6. Analyse following/followed and retweeting relationships with the `igraph` package
+
+    
+Information is retrieved from the web using an "API"
+- 
+
+    
+    
+
+
 Technologies for disseminating, extracting, and storing web data
 =================================================================
 
@@ -89,9 +136,6 @@ Technologies for disseminating, extracting, and storing web data
  <img src="images/webTechnologies.png" width="75%" style="float:centered"
  alt ="Technologies for disseminating, extracting, and storing web data" /> 
 </div>
-
-The R scraping toolkit
-===========================
 
 
 
@@ -151,31 +195,6 @@ Technologies (4): AJAX
 - This means that it is possible to update parts of a web page, without reloading the whole page.
 
 
-So what is web scraping?
-========================
-
-- Web scraping (web harvesting or web data extraction) is how we name computer software techniques for extracting information from websites.
-    + See [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping)
-
-- Web scraping focuses on the *transformation of unstructured data* on the web, typically in web format such as HTML, XML or JSON, into *structured* data that can be stored and analyzed in a central local database or spreadsheet.
-    + Instead of structured data, if using R, we can think of *[tidy](http://vita.had.co.nz/papers/tidy-data.pdf)* data.
-    
-Web scraping and R
-==================
-
-- Web scraping has been developed independently of R. <br>See for example:
-    + [Scraping the Web for Arts and Humanities](https://www.essex.ac.uk/ldev/documents/going_digital/scraping_book.pdf)
-    + [Introduction to Web Scraping using Scrapy and Postgres](http://newcoder.io/scrape/)
-    
-- There is a lot of information on scraping using python
-- However if you feel comfortable working with R it is possible that you can absorbe easier and faster some of the the vast amount of resources for getting data from the web with R.
-
-The scrapping process
-=============================
-<div align="center"> 
- <img src="images/fromTheWebIntoR.png" height="75%" style="float:centered"/> 
-</div>
-    
 
 
 References
