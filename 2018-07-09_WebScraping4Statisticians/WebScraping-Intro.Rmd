@@ -1,6 +1,7 @@
 ---
 title: "Web Scraping 4 Statisticians"
-author: "Alex Sanchez (asanchez@ub.edu) <br> Genetics Microbiology and Statistics Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
+author: "Alex Sanchez (asanchez@ub.edu) <br> Genetics Microbiology and Statistics Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca
+<br><br>https://github.com/ASPteaching/WebScraping_with_R"
 date: "July the 9th 2018"
 output:
   slidy_presentation:
@@ -109,7 +110,8 @@ https://doi.org/10.1016/j.softx.2017.04.004
 3. Extract it into an R object
 
 - This can be done with different packages. 
-- A common choice : Hadley Wickam's `rvest` 
+- A common choice  Hadley Wickam's `rvest` 
+- but the example uses `XML` package by Duncan Temple Lang
 
 Example 1: Mapping world  heritages in danger
 =============================================

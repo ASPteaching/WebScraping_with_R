@@ -4,8 +4,9 @@ Disclaimer and acknowledgements
 
 - These slides have been prepared based on multiple sources: websites, blogs, courses. While it is hard to cite them all I wish to acknowledge those sources that have been particularly useful.
 
-- "The" book
+- "The" books
     + [Automated Data Collection with R](http://www.r-datacollection.com/) 
+    + [XML and Web Technologies for Data Sciences with R](https://www.springer.com/la/book/9781461478997)
 
 - Tutorials and courses
     + [Tutorial-R-web-data](https://github.com/gastonstat/tutorial-R-web-data), by Gaston Sanchez
@@ -15,4 +16,4 @@ Disclaimer and acknowledgements
 - Great Talks (not much imaginative names)
     + [Web Scraping with R (John Little)](https://www.johnlittle.info/project/custom/rfun-scrape/slides.html#1)
     + [Web Scraping with R (Xiao Nan)](https://uploads.cosx.org/2013/05/Web-Scraping-with-R-XiaoNan.pdf)
-    + [Web Scraping in R (Carson Sievert)(https://slides.cpsievert.me/web-scraping/#1)
+    + [Web Scraping in R (Carson Sievert)](https://slides.cpsievert.me/web-scraping/#1)
