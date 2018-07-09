@@ -15,9 +15,6 @@ highlight: pygments
 ```{r setLicense, child = 'license.Rmd'}
 ```
 
-```{r disclaimer, child = 'disclaimer.Rmd'}
-```
-
 We need data, ... and the web is full of it
 ===========================================
 
@@ -25,61 +22,68 @@ We need data, ... and the web is full of it
 - The web has plenty of data
     + In 2008, an estimated 154 million HTML tables (out of the 14.1 billion) contain 'high quality relational data'!!!
     + Hard to quantify how much more exists outside of HTML Tables, but there is an estimate of at least 30 million lists with 'high quality relational data'.
-- Accessing the data in the web is the topic of this talk
+- *Getting data from the web* is the topic of this talk
 
 
-What we (may) need to learn to scrap the web
-============================================
+What we (may) need to learn to get data from the web
+====================================================
 
+<!--
 - Areas that are important for data collection on the Web with R
-- The technologies that allow the *distribution of content on the Web*.
-- The appropriate technique / tools for *collecting* (as opposite to distributing) data from the web.
-
+-->
+- Technologies that allow the *distribution of content on the Web*.
+- Techniques & Tools for *collecting* (as opposite to distributing) data from the web.
 - In the way to acquiring these abilites we may learn many useful things that don't necessarily have to do with web scraping such as:
     + HTML/CSS for creating web -and non web- pages (html is standard knitR output)
     + XML for sharing many types of data (also pdf, excel or epub)
-    + Regular expressions and text mining techniques (for analyzing tweeter or facebook downloads)
+    + Regular expressions for describing patterns in strings.
+    + A variety of text mining and other interesting topics, such as "Sentiment Analysis" for analyzing data from Twitter, Linkedin etc.
 
-Understanding web browsing (1) 
-===========================
+Understanding web communication: http
+=====================================
 
 <div align="center"> 
- <img src="images/browser-revisited-1.png" style="float:centering"
+ <img src="images/client-server.png" style="float:centering"
  alt ="Undrestanding web browsing" /> 
 </div>
 
-- The user **requests** information through the browser
-- The server **responds** by sending the information required.
-
+- User/Client asks for information: **http request**
+- Server returns the information **http response**
 - Data acquisition may be performed at two levels
     + Requesting information directly from the server
     + Parsing the response emited by the server
 
-Understanding web browsing (2)
-===========================
-
-- Requesting information directly from the server
+Requesting & retrieving information directly 
+=============================================
 
 <div align="center"> 
- <img src="images/browser-revisited-1.png" style="float:centering"
+ <img src="images/client-server-retrieve.png" style="float:centering"
  alt ="Undrestanding web browsing" /> 
 </div>
 
-- Retreiver tools capture the information which may be
-     + Directly processed if sent by an API
-     + Analyzed and processed if in raw form
-        
+- Information retrieval can be made directly 
+    + in raw form through http GET requests
+    + through an Application Programming Interface (API)
+- There exist many APIs for retrieving data from "typical" places such as Twitter, Amazon, Linkedin, etc.
+    + APIs require an authorization/user identification
+- R packages 
+    + `httr`, `Rcurl`
+    + `tweeteR`, `Rlinkedin`
 
-Understanding web browsing (3)
-===========================
-- Parsing the response emited by the server
+Parsing the server's response
+===============================
 
 <div align="center"> 
- <img src="images/browser-revisited-3.png" style="float:centered"
+ <img src="images/client-server-parse.png" style="float:centered"
  alt ="Undrestanding web browsing" /> 
 </div>
 
-- Parser tools extract information from the response sent by the server to the browser
+- Parser tools extract information from the response sent by the server to the browser.
+- The response is usually an HTML / XML document.
+- Parsers exploit the hierarchichal structure of HTML / XML to extract information and convert it into R objects
+- R packages
+    + `rvest`, `selectR`
+    + `XML`, `xml2`
 
 
 The R scraping toolkit
@@ -92,8 +96,11 @@ The R scraping toolkit
  alt ="R packages for data collection" /> 
 </div>
 
-Example (1): Scraping 
-============================
+Source: **RCrawler: An R package for parallel web crawling and scraping**. Salim Khalil & MohamedFakir. 
+https://doi.org/10.1016/j.softx.2017.04.004
+
+(1): Scraping web pages
+=================================
 
 - The "simplest" situation: 
 1. Access a web site and select one or more pages
@@ -103,13 +110,93 @@ Example (1): Scraping
 
 - This can be done with different packages. 
 - A common choice : Hadley Wickam's `rvest` 
+
+Example 1: Mapping world  heritages in danger
+=============================================
+
+- This case study has been adapted from chapter 1 of the book [Automated Data Collection with R](http://www.r-datacollection.com/) (ADCR, from now on). 
+- Its goal is not to be exhaustive but providing a first example of a situation where we obtain and analyze data from the web.
+- The goal is to tabulate and plot a list of endangered sites available in  [https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger](https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger).
+- We proceed as follows:
+
+1. Go to the web and locate the desired information
+2. Download the pages (here, HTML document)
+2. Extract HTML table into an R object
+3. Clean the data and build a data.frame
+4. Plot and analyze
+
+** See the complete analysis file in the demos folder.**
+
+Example 1a: Wikipedia page
+=============================================
+
+<div align="center"> 
+ <img src="images/worldheritages1WikiPage.png"  width="90%"style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
+Example 1b: Locate desired table
+=============================================
+
+<div align="center"> 
+ <img src="images/worldHeritages2Table.png"  width="90%"style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
+Example 1c: R code
+=============================================
+
+```{r eval = FALSE}
+# load packages
+library(stringr); library(XML); library(maps)
+#--- parsing from locally stored HTML file
+heritage_parsed <- htmlParse("worldheritagedanger.htm")
+#--- Extract table from web page and select desired table
+danger_table <- readHTMLTable(heritage_parsed, stringsAsFactors = FALSE, which = 2) 
+#--- select and rename columns
+danger_table <- danger_table[,c(1,3,4,6,7)]
+colnames(danger_table) <- c("name","locn","crit","yins","yend")
+#--- Clean data
+danger_table$crit <- ifelse(str_detect(danger_table$crit, "Natural")==T, "nat", "cult")
+# cleanse years
+danger_table$yins <- as.numeric(danger_table$yins)
+danger_table$yend <- as.numeric(unlist(str_extract_all(danger_table$yend, "[[:digit:]]{4}$")))
+#--- get countries
+reg <- "[[:alpha:] ]+(?=[[:digit:]])"
+danger_table$country <- str_extract(danger_table$locn , reg) 
+#--- get coordinates
+reg_y <- "[/][ -]*[[:digit:]]*[.]*[[:digit:]]*[;]"
+reg_x <- "[;][ -]*[[:digit:]]*[.]*[[:digit:]]*"
+danger_table$y_coords <- as.numeric(str_sub(str_extract(danger_table$locn, reg_y), 3, -2))
+danger_table$x_coords <-  as.numeric(str_sub(str_extract(danger_table$locn, reg_x), 3, -1))
+#--- plot endangered heritage sites
+par(oma=c(0,0,0,0)); par(mar=c(0,0,0,0))
+pch <- ifelse(danger_table$crit == "nat", 19, 2)
+map("world", col = "darkgrey", lwd = .5, mar = c(0.1,0.1,0.1,0.1))
+points(danger_table$x_coords, danger_table$y_coords, pch = pch, col = "black", cex = .8)
+box()
+```
+
+Example 1: R data frame
+=============================================
+
+<div align="center"> 
+ <img src="images/worldHeritages3RDataFrame.png"  width="90%"style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
+
+Example 1: Plot
+=============================================
+
+<div align="center"> 
+ <img src="images/worldHeritages4Map.png"  width="90%"style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
     
 Example (2): Sentiment Analysis from Tweeter 
 ============================================
-
-- Information retrieval can be made in raw form or through an Application Programming Interface (API)
-- There exist many APIs for retrieving data from "typical" places such as Tweeter, Amazon, linkedin, etc.
-    + APIs require an authorization/user identification
 
 - A typical information extraction process may be the following
 1. Extract tweets and followers from the Twitter website with R
@@ -121,118 +208,6 @@ and the `twitteR` package.
 5. Analyse sentiment with the `sentiment140` package.
 6. Analyse following/followed and retweeting relationships with the `igraph` package
 
-    
-Information is retrieved from the web using an "API"
-- 
 
-    
-    
-
-
-Technologies for disseminating, extracting, and storing web data
-=================================================================
-
-<div align="center"> 
- <img src="images/webTechnologies.png" width="75%" style="float:centered"
- alt ="Technologies for disseminating, extracting, and storing web data" /> 
-</div>
-
-
-
-Technologies (1): HTML
-=======================
-
-<div align="center"> 
- <img src="images/html.jpeg" height="75%" style="float:centered"
- alt ="Technologies (1): HTML" /> 
-</div>
-
-- **H**ypertext **M**arkup **L**anguage (HTML) is the language that all browsers understand.
-- Not a dedicated data storage format but 
-- First option for containing information we look for.
-- A minimum understanding of html required 
-
-Technologies (2): XML
-=======================
-
-<div align="center"> 
- <img src="images/xml.png" height="75%" style="float:centered"
- alt ="Technologies (1): XML" /> 
-</div>
-
-- E**X**tensible **M**arkup **L**anguage or XML is one of the most popular formats for exchanging data over the Web.
-- XML is “just” data wrapped in user-defined tags. 
-- The user-defined tags **make XML much more flexible** for storing data than HTML.
-
-Technologies (3): JSON
-=======================
-
-<div align="center"> 
- <img src="images/json.jpeg" height="75%" style="float:centered"
- alt ="Technologies (3): JSON" /> 
-</div>
-
-- JavaScript Object Notation or JSON
-- JSON is a lightweight data-interchange format
-- JSON is language independent but uses javascript syntax
-- JSON is a syntax for storing and exchanging data.
-- JSON is an easier-to-use alternative to XML
-
-Technologies (4): AJAX
-=======================
-
-<div align="center"> 
- <img src="images/ajax.jpeg" height="75%" style="float:centered"
- alt ="Technologies (4): AJAX" /> 
-</div>
-
-- AJAX = Asynchronous JavaScript And XML.
-- AJAX is a group of technologies that uses a combination of:
-    + A user built-in XMLHttpRequest object (to request data from a web server)
-    + JavaScript and HTML DOM (to display or use the data)
-    
-- AJAX allows web pages to be updated asynchronously by exchanging data with a web server behind the scenes. 
-- This means that it is possible to update parts of a web page, without reloading the whole page.
-
-
-
-
-References
-===========
-- [Automated Data Collection from the Web with R](http://www.r-datacollection.com/), by Munzer, Rubba, Meisner & Nyhulis. Wiley.
-- [XML and Web Technologies for Data Science with R](http://www.rxmlwebtech.org/). Deborah Nolan & Duncan Temple Lang. UseR!
-- [Introduction to Data Technologies](https://www.stat.auckland.ac.nz/~paul/ItDT/itdt-2013-03-26.pdf). Duncan Murdoch.
-
-Resources
-==========
-- [Getting Data from the Web with R](https://github.com/gastonstat/tutorial-R-web-data), by Gaston Sánchez.
-- [Web scraping for the humanities and social sciences](http://quantifyingmemory.blogspot.co.uk/2014/02/web-scraping-basics.html), Rolf Fredheim and Aiora Zabala.
-- [Web Scraping with R](http://cos.name/wp-content/uploads/2013/05/Web-Scraping-with-R-XiaoNan.pdf), by Xiao Nan.
-- [R-bloggers posts on *Web Scraping*](http://www.r-bloggers.com/?s=web+scraping)
-- And see also [CRAN Web Services and Technologies task view](https://cran.r-project.org/web/views/WebTechnologies.html)
-
-
-Case Study: World heritage sites in danger
-========================================================
-
-- The UNESCO is an organization of the United Nations which, among other things, fights for the preservation of the world's natural and cultural heritage. 
-- As November 2013 there  are 981 heritage sites, most of which of are man-made like the Pyramids of Giza, but also natural phenomena like the Great Barrier Reef are listed. 
-- Unfortunately, some of the awarded places are threatened by human intervention. 
-- These are the questions that we want to examine in this first case study.
-    + *Which sites are threatened and where are they located?*
-    + *Are there regions in the world where sites are more endangered than in others?* 
-    + *What are the reasons that put a site at risk?* 
-    
-Working through the case study with R
-=====================================
-
-- The list of heritage sites in danger can be found in [The Wikipedia](https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger)
-- The R code for answering the questions posed is available at files: 
-    + `ch-1-introduction.Rmd`, `ch-1-introduction.R`, `ch-1-introduction.html`.
-- Run this code step by step without worrying too much at what each instruction does
-    + This wil give you a grasp of how a web scraping project works.
-    + The meaning of each step will be clear at the end of the module.
-    
-
-
-
+```{r disclaimer, child = 'disclaimer.Rmd'}
+```
