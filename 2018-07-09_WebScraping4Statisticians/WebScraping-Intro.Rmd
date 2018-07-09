@@ -208,6 +208,15 @@ and the `twitteR` package.
 5. Analyse sentiment with the `sentiment140` package.
 6. Analyse following/followed and retweeting relationships with the `igraph` package
 
+**See lesson "WebScrapping-3-Scraping_Twitter_for_Sentiment_Analysis" in the demos folder**
+
+See many more examples in the web
+=============================
+
+- [Beginner’s Guide on Web Scraping in R (using rvest) with hands-on example](https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/)
+- [Examples of Web Scraping with R](http://www.programmingr.com/examples/examples-web-scraping-r/)
+- [Web Scraping Exercises](https://www.r-bloggers.com/web-scraping-exercises/)
+
 
 ```{r disclaimer, child = 'disclaimer.Rmd'}
 ```
