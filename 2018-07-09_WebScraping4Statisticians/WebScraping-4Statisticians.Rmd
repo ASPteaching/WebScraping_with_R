@@ -179,7 +179,7 @@ points(danger_table$x_coords, danger_table$y_coords, pch = pch, col = "black", c
 box()
 ```
 
-Example 1: R data frame
+Example 1d: We have an R data frame
 =============================================
 
 <div align="center"> 
@@ -188,7 +188,7 @@ Example 1: R data frame
 </div>
 
 
-Example 1: Plot
+Example 1e: And now the plot
 =============================================
 
 <div align="center"> 
@@ -197,7 +197,7 @@ Example 1: Plot
 </div>
 
     
-Example (2): Sentiment Analysis from Tweeter 
+Example 2a: Sentiment Analysis from Tweeter 
 ============================================
 
 - A typical information extraction process may be the following
@@ -211,6 +211,59 @@ and the `twitteR` package.
 6. Analyse following/followed and retweeting relationships with the `igraph` package
 
 **See lesson "WebScrapping-3-Scraping_Twitter_for_Sentiment_Analysis" in the demos folder**
+
+Example 2b: Twitter Code for scraping \#IBC2018BCN 
+===============================================
+```{r eval=FALSE}
+### --- load packages
+library(plyr); library(stringr);library(twitteR); library(tm); library(wordcloud)
+## ----You may put your real keys in a non-accessible file-----------------
+## source("twitterKeys.R") # Do not put thhis file in github (exclued it with .gitignore)
+setup_twitter_oauth(consumer_key = twitter_key, consumer_secret = twitter_secret,
+                    access_token= access_token, access_secret=access_secret)
+# (1) choose direct authentication and answer "Yes"
+
+## ------------------------------------------------------------------------
+myTweets<- searchTwitter("#IBC2018BCN", n=200)
+save(myTweets, file="myTweets.Rda")
+
+## ----regexClean----------------------------------------------------------
+showTweets <- TRUE
+if (!exists("myTweets")) load("myTweets.Rda")
+head(tweets.text)
+tweets.text <- sapply(myTweets, function(x) x$getText())
+tweets.text <- gsub("@\\w+", "", tweets.text) # Replace @UserName
+tweets.text <- gsub("[[:punct:]]", "", tweets.text) # Remove punctuation
+tweets.text <- gsub("http\\w+", "", tweets.text) # Remove links
+tweets.text <- gsub("[ |\t]{2,}", "", tweets.text) # Remove tabs
+tweets.text<-  gsub( '[^A-z0-9_]', ' ', tweets.text) # remove codes that are neither characters nor digits
+tweets.text <- tolower(tweets.text) # Set characters to lowercase
+tweets.text <- gsub("rt", "", tweets.text) # Replace blank space
+tweets.text <- gsub("^ ", "", tweets.text) # Remove blank spaces at the beginning
+tweets.text <- gsub(" $", "", tweets.text) # Remove blank spaces at the end
+head(tweets.text)
+
+## ---Use tm package to have a list of stopwords
+require("tm")
+tweets.text.corpus <- Corpus(VectorSource(tweets.text)) #create corpus
+#clean up by removing stop words
+tweets.text.corpus <- tm_map(tweets.text.corpus, function(x) removeWords(x, stopwords()))
+head(tweets.text.corpus)
+
+#--- generate wordcloud
+require(wordcloud)
+wordcloud(tweets.text.corpus, min.freq = 2, scale=c(7,0.5),
+          colors=brewer.pal(8, "Dark2"),random.color= TRUE, random.order = FALSE, 
+          max.words = 200)
+```
+
+Example 2c: A nice wordcloud from your tweets
+=============================================
+<div align="center"> 
+ <img src="images/IBC2018BCN.png"  style="float:centered"
+ alt ="R packages for data collection" /> 
+</div>
+
 
 See many more examples in the web
 =============================
