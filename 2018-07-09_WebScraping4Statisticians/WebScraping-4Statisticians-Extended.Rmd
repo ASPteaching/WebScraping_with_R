@@ -43,6 +43,7 @@ What we (may) need to learn to get data from the web
 Technologies for disseminating, extracting, and storing web data
 =============================================================
 
+<br>
 <div align="center"> 
  <img src="images/webTechnologies.png" width="75%" style="float:centered"
  alt ="Technologies for disseminating, extracting, and storing web data" /> 
@@ -200,7 +201,7 @@ The R scraping toolkit
 - Comparison of some popular R packages for data collection.
 
 <div align="center"> 
- <img src="images/TheRscrapingToolkit.png"  width="90%"style="float:centered"
+ <img src="images/TheRscrapingToolkit.png"  width="90%" style="float:centered"
  alt ="R packages for data collection" /> 
 </div>
 
@@ -236,6 +237,8 @@ Example 1: Mapping world  heritages in danger
 4. Plot and analyze
 
 ** See the complete analysis file in the demos folder.**
+
+** See lesson "WebScrapping-1b-Parsing HTML" in the Summer School folder** for an example that uses `rvest`
 
 Example 1a: Wikipedia page
 =============================================
