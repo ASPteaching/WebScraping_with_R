@@ -56,6 +56,14 @@ Technologies (1): HTML
 - First option for containing information we look for.
 - A minimum understanding of html required 
 
+Technologies (1b)
+==================
+<div align="center"> 
+ <img src="images/250px-CSS-shade.svg.png" height="75%" style="float:centered"
+ alt ="Technologies (1): XML" /> 
+</div>
+
+
 Technologies (2): XML
 =======================
 
