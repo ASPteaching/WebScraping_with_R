@@ -1,7 +1,7 @@
 ---
 title: "Web Scraping with R (4b): <br>Parsing XML. The XPath language"
 author: "Alex Sanchez (asanchez@ub.edu) <br> GME Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
-date: "XII MESIO Summer School (2018)"
+date: "April 2019"
 output:
   slidy_presentation:
     fig_width: 7

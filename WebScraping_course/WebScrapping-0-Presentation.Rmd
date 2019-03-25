@@ -1,7 +1,7 @@
 ---
 title: "Web Scraping with R"
 author: "Alex Sanchez (asanchez@ub.edu) <br> GME Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
-date: "XII MESIO Summer School (2018)"
+date: "April 2019"
 output:
   slidy_presentation:
     fig_width: 7
@@ -154,7 +154,7 @@ Evaluation
     + Project completeness and complexity.
     + Appropriate use of technologies and tools discussed in class.
     + Robustness of the elaborated product.
-- Because this is a summer school you can also choose not to be evalauted :-)
+
 
 Contents
 =========

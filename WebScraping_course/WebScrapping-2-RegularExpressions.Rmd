@@ -1,7 +1,7 @@
 ---
 title: "Web Scraping with R (2): <br> Regular Expressions"
 author: "Alex Sanchez (asanchez@ub.edu) <br> GME Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
-date: "XII MESIO Summer School (2018)"
+date: "April 2019"
 output:
   slidy_presentation:
     fig_width: 7
@@ -48,7 +48,7 @@ A simple example (1): files and datasets
 - We wish to locate all the files which deal with the `dplyr` package. We assume that these are file with the string "dplyr" inside their name.
 - To do this we proceed as follows:
 
-1. List all files in the folder where you uncompressed `"regexEXample1.zip"`
+1. List all files in the folder where you uncompressed `"regexExample1.zip"`
 
 ```{r}
 setwd("regexExample1")

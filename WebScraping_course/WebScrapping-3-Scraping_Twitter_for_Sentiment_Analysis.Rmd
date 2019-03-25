@@ -1,7 +1,7 @@
 ---
 title: "Web Scraping with R (3): <br> Scraping twiter for Sentiment Analysis"
 author: "Alex Sanchez (asanchez@ub.edu) <br> GME Department. Universitat de Barcelona <br> Statistics and Bioinformatics Unit. Vall d'Hebron Institut de Recerca"
-date: "XII MESIO Summer School (2018)"
+date: "April 2018"
 output:
   slidy_presentation:
     fig_width: 7
@@ -33,12 +33,12 @@ Installing necessary R packages
 - For the purpose of this chapter, we will need the following packages:
     + `ROAuth`: Provides an interface to the OAuth 1.0 specification, allowing users to authenticate via OAuth to the server of their choice.
     + `httr`: Useful tools for working with the HTTP protocol. allows alternative authentication.
-    + `Twitter`: Provides an interface to the Twitter web API.
+    + `twitteR`: Provides an interface to the Twitter web API.
     + `tm`: Text mining package. 
 - Start by installing and loading all the required packages.
 
 ```{r eval=TRUE}
-if(!require(plyr)) install.packages("plyr")
+if(!require(dplyr)) install.packages("dplyr")
 if(!require(stringr)) install.packages("stringr")
 if (!require(twitteR)) install.packages("twitteR")
 # if (!require(ROAuth)) install.packages("ROAuth")
