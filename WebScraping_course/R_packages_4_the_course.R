@@ -1,6 +1,6 @@
 # Rlibraries to be used in the Web Scraping course
 if(!require(rvest)) install.packages("rvest")
-if(!require(dplyr)) install.packages("dplyr")
+if(!require(plyr)) install.packages("plyr")
 if (!require(twitteR)) install.packages("twitteR")
 if (!require(ROAuth)) install.packages("ROAuth")
 if (!require(tm)) install.packages("tm")
