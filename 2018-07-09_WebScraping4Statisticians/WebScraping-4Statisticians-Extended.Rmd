@@ -146,8 +146,6 @@ So what is web scraping?
 - Web scraping focuses on the *transformation of unstructured data* on the web, typically in web format such as HTML, XML or JSON, into *structured* data that can be stored and analyzed in a central local database or spreadsheet.
     + Instead of structured data, if using R, we can think of *[tidy](http://vita.had.co.nz/papers/tidy-data.pdf)* data.
     
-
-
 Understanding web communication: http
 =====================================
 
