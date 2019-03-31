@@ -6,6 +6,10 @@ if (!require(ROAuth)) install.packages("ROAuth")
 if (!require(tm)) install.packages("tm")
 if (! require(wordcloud) ) install.packages("wordcloud")
 if (! require(XML) ) install.packages("XML")
+###
+if(!require(maps)) install.packages("maps")
+
+
 
 # 1 - Intro & Parsing html
 

@@ -234,9 +234,9 @@ Example 1: Mapping world  heritages in danger
 3. Clean the data and build a data.frame
 4. Plot and analyze
 
-** See the complete analysis file in the demos folder.**
+**See the complete analysis file in the demos folder.**
 
-** See lesson "WebScrapping-1b-Parsing HTML" in the Summer School folder** for an example that uses `rvest`
+**See lesson "WebScrapping-1b-Parsing HTML" in the Summer School folder** for an example that uses `rvest`
 
 Example 1a: Wikipedia page
 =============================================

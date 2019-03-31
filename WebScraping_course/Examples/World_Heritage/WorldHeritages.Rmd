@@ -1,0 +1,177 @@
+---
+title: "Case study on Automated Data Collection"
+author: "Alex Sanchez (adapted from ADC)"
+date: "June 2018"
+output: 
+  html_document:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+This case study has been adapted from chapter 1 of the book [Automated Data Collection with R](http://www.r-datacollection.com/) (ADCR, from now on). Its goal is not to be exhaustive but providing a first example of a situation where we obtain and analyze data from the web.
+
+```{r setup, include=FALSE, echo=FALSE}
+require(knitr)
+# include this code chunk as-is to set options
+opts_chunk$set(comment = NA, prompt = TRUE, tidy = FALSE, fig.width = 7, fig.height = 7,echo = TRUE, message = FALSE, warning = FALSE, cache=FALSE)
+Sys.setlocale("LC_TIME", "C")
+```
+
+```{r}
+# load packages
+if (!require(stringr)) install.packages("stringr", dep=TRUE)
+if (!require(XML)) install.packages("XML", dep=TRUE)
+if (!require(maps)) install.packages("maps", dep=TRUE)
+
+require(stringr)
+require(XML)
+require(maps)
+```
+
+# Getting the data
+
+We start grabbing the data from the web page [https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger](https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger).
+
+If there are any problems the page can be saved into a local file and scraping performed on a local copy.
+
+```{r}
+# parsing from HTML file in the web
+# heritage_parsed <- htmlParse("https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger", encoding = "UTF-8")
+
+# parsing from locally stored HTML file
+heritage_parsed <- htmlParse("worldheritagedanger.htm")
+```
+
+## Parsing the object
+We have obtained an object with all that's in the web page.
+Next we extract *HTML tables* from this object.
+
+```{r}
+tables <- readHTMLTable(heritage_parsed, stringsAsFactors = FALSE)
+names(tables)
+# extract desired table
+danger_table <- tables[[2]]
+
+# alternatively: directly select second table
+danger_table <- readHTMLTable(heritage_parsed, stringsAsFactors = FALSE, which = 2) 
+
+names(danger_table)
+```
+
+# Data cleansing
+
+Now we have a data.frame that can be explored "as usual" 
+```{r}
+# select and rename columns
+danger_table <- danger_table[,c(1,3,4,6,7)]
+colnames(danger_table) <- c("name","locn","crit","yins","yend")
+danger_table$name[1:3]
+```
+Additionally, we perform some simple data cleaning, a step
+often necessary when importing web-based content into R. 
+
+- The variable `crit`, which contains the information whether the site is of cultural or natural character, is recoded, 
+- and the two variables `y_ins` and `y_end` are turned into numeric ones.2 
+- Some of the entries in the `y_end` variable are ambiguous as they contain several years. We select the last given year in the cell. 
+- To do so, we specify a so-called regular expression 
+
+```{r}
+danger_table$crit <- ifelse(str_detect(danger_table$crit, "Natural")==T, "nat", "cult")
+# cleanse years
+danger_table$yins <- as.numeric(danger_table$yins)
+danger_table$yend
+yend_clean <- unlist(str_extract_all(danger_table$yend, "[[:digit:]]{4}$"))
+danger_table$yend <- as.numeric(yend_clean)
+```
+The locn variable is a bit of a mess, exemplified by three cases drawn from the data-set:
+```{r}
+danger_table$locn[c(1,3,5)]
+```
+The variable contains the name of the site's location, the country, and the geographic coordinates in several varieties. What we need for the map are the coordinates, given by the latitude (e.g., 30.84167N) and longitude (e.g., 29.66389E) values. 
+
+To extract this information, we have to use some more advanced text manipulation tools called "regular expressions".
+
+In short, we have to give R an exact description of what the information we are interested in looks like, and then let R search for and extract it. 
+
+To do so, we use functions from the stringr package. In order to get the latitude and longitude values, we write the following:
+
+```{r}
+# get countries
+reg <- "[[:alpha:] ]+(?=[[:digit:]])"
+country <- str_extract(danger_table$locn , reg) 
+# use forward assertion in Perl regular expression
+country
+country[29] <- "C?te d'Ivoire / Guinea"
+country[32] <- ""
+danger_table$country <- country
+
+# get coordinates
+reg_y <- "[/][ -]*[[:digit:]]*[.]*[[:digit:]]*[;]"
+reg_x <- "[;][ -]*[[:digit:]]*[.]*[[:digit:]]*"
+y_coords <- str_extract(danger_table$locn, reg_y)
+(y_coords <- as.numeric(str_sub(y_coords, 3, -2)))
+danger_table$y_coords <- y_coords
+x_coords <- str_extract(danger_table$locn, reg_x)
+(x_coords <- as.numeric(str_sub(x_coords, 3, -1)))
+danger_table$x_coords <- x_coords
+danger_table$locn <- NULL
+```
+When we apply this pattern to the locn variable with the
+str_extract() command and extract the numeric information with str_sub(), we get the following:
+
+```{r}
+round(danger_table$y_coords, 2)[1:3]
+round(danger_table$x_coords, 2)[1:3]
+dim(danger_table)
+head(danger_table)
+```
+# Data visualization
+
+The data frame consists of 44 observations and 6 variables. The data are now set up in a way that we can proceed with mapping the sites. To do so, we use another package named "maps." In it we find a map of the world that we use to pinpoint the sites' locations with the extracted y and x coordinates.
+
+```{r}
+# plot endangered heritage sites
+# pdf(file="heritage-map.pdf", height=3.3, width=7, family="URWTimes")
+par(oma=c(0,0,0,0))
+par(mar=c(0,0,0,0))
+pch <- ifelse(danger_table$crit == "nat", 19, 2)
+map("world", col = "darkgrey", lwd = .5, mar = c(0.1,0.1,0.1,0.1))
+points(danger_table$x_coords, danger_table$y_coords, pch = pch, col = "black", cex = .8)
+box()
+# dev.off()
+```
+
+We find that many of the endangered sites are located in Africa, the Middle East, and Southwest Asia, and a few others in South and Central America. The endangered cultural heritage sites are visualized as the triangle. They tend to be clustered in the Middle East and Southwest Asia. Conversely, the natural heritage sites in danger, here visualized as the dots, are more prominent in Africa.
+
+We find that there are more cultural than natural sites in danger.
+
+```{r}
+# table heritage criteria
+table(danger_table$crit)
+```
+
+Other plots can be done such as year of endangerment
+```{r}
+#pdf(file="heritage-hist1.pdf", height=3.3, width=7, family="URWTimes")
+par(oma=c(0,0,0,0))
+par(mar=c(4,4,1,.5))
+hist(danger_table$yend, freq=TRUE, xlab="Year when site was put on the list of endangered sites", main="")
+box()
+#dev.off()
+```
+
+We can plot time between inscription and endangerment
+ 
+```{r}
+duration <- danger_table$yend - danger_table$yins
+#pdf(file="heritage-hist2.pdf", height=3.3, width=7, family="URWTimes")
+par(oma=c(0,0,0,0))
+par(mar=c(4,4,1,.5))
+hist(duration, freq=TRUE, xlab="Years it took to become an endangered site", main="")
+box()
+#dev.off()
+```
+
+
+
