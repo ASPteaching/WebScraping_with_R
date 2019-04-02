@@ -1,0 +1,54 @@
+---
+title: "Materials for the course"
+author: "Alex Sanchez"
+date: "June 2019"
+output: 
+  html_document:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = NA, prompt = TRUE, tidy = FALSE, fig.width = 7, fig.height = 7,echo = TRUE, message = FALSE, warning = FALSE, cache=FALSE)
+Sys.setlocale("LC_TIME", "C")
+```
+
+# Presentation
+
+This is a course on web scraping **with R**. THis means that it is expected that participants in the course are familiar with R, honestly, the more the better. 
+
+The course intends to relies on this familiarity to introduce distinct aspects of web scraping.
+
+# Materials for the course
+
+- It is assumed that the last version of R is installed in your computer.
+
+- The course is intended to be taken using R studio
+    + Download and install Rstudio from its web site: [https://www.rstudio.com/](https://www.rstudio.com/)
+    
+- The course uses control version with git and github
+    + Create a free github account at [github.com](github.com) if you don't have one yet.
+    + Install te `git` program in your computer. Make sure that git is in the path so that Rstudio is able to locate it.
+    
+- We will need a twitter account for a part of the course:
+    + Create a twitter account at [twitter.com](twitter.com)
+    
+# R packages
+
+A variety of R packages will be used during the course. Install them in your system using, if you wish, the code below.
+
+```{r eval=FALSE}
+# Rlibraries to be used in the Web Scraping course
+if(!require(rvest)) install.packages("rvest")
+if(!require(plyr)) install.packages("plyr")
+if (!require(twitteR)) install.packages("twitteR")
+if (!require(ROAuth)) install.packages("ROAuth")
+if (!require(tm)) install.packages("tm")
+if (! require(wordcloud) ) install.packages("wordcloud")
+if (! require(XML) ) install.packages("XML")
+###
+if(!require(maps)) install.packages("maps")
+
+```
+

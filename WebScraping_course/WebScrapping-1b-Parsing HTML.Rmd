@@ -10,6 +10,8 @@ css: myStyles.css
 footer: "Parsing HTML"
 keep_md: true
 highlight: pygments
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setLicense, child = 'license.Rmd'}
@@ -118,7 +120,8 @@ Basic rvest capabilities
 =======================================
 
 + Get the data: Create an html document from a url, a file on disk or a string containing html with `read_html()`.
-+ Select parts of an html document using css selectors: `html_nodes()` (Read vignette with: `vignette("selectorgadget")` after installing and loading rvest in R.
++ Select parts of an html document using css selectors: `html_nodes()` 
+    - Read vignette with: `vignette("selectorgadget")` after installing and loading rvest in R.
 + Extract components with 
     - `html_tag()` (the name of the tag),
     - `html_text()` (all text inside the tag), 
@@ -129,7 +132,7 @@ Basic rvest capabilities
 + Extract, modify and submit forms with `html_form()`, `set_values()` and `submit_form()`.
 + Detect and repair encoding problems with `guess_encoding()` and `repair_encoding()`. Then pass the correct encoding into `html()` as an argument.
 
-`rvest`by the example (1): Grab the data
+`rvest` by the example (1): Grab the data
 ==========================================
 
 - Imagine we want to extract information from a certain movie on imdb, "The Lego Movie"
@@ -169,7 +172,7 @@ rating
 
 ```{r eval=FALSE}
 cast <- lego_movie %>%
-  html_nodes("#titleCast .itemprop span") %>%
+  html_nodes("#titleCast .itemprop") %>%
   html_text()
 cast
 ```
