@@ -172,9 +172,19 @@ rating
 
 ```{r eval=FALSE}
 cast <- lego_movie %>%
-  html_nodes("#titleCast .itemprop") %>%
+  html_nodes("td a") %>%
   html_text()
 cast
+```
+Now we need to extract and clean the names.
+Notice that we have selected several table's contents. An alternative would have been to start extracting the tables.
+
+```{r}
+library(stringi)
+ambNom<- stri_locate(cast, regex="\\n")
+namesPos <- which(!is.na(ambNom[,1]))
+names<-cast[namesPos]
+names<- names[1:15]
 ```
 
 - Or we can extract the image:
