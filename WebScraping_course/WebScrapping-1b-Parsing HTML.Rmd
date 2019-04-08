@@ -214,7 +214,7 @@ Extract cast names using `html_tables()`
 require(rvest)
 tables <- html_table(lego_movie, fill = TRUE) #Parses tables into data frames
 castTable<- tables[[1]]
-castNames3 <- as.character(castTable[2:16,2])
+castNames3 <- as.character(castTable[-1,2])
 castNames3
 ```
 
