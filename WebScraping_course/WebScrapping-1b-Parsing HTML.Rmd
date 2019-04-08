@@ -140,7 +140,7 @@ Basic rvest capabilities
 [The Lego Movie]("http://www.imdb.com/title/tt1490017/)
 
 ```{r eval=FALSE}
-install.packages("rvest", dependencies=TRUE)
+# install.packages("rvest", dependencies=TRUE)
 require(rvest)
 lego_movie <- read_html("http://www.imdb.com/title/tt1490017/")
 ```
@@ -159,16 +159,35 @@ Now we have the data we need to figure out which *selector* matches the data we 
 ```{r eval=FALSE}
 rating <- lego_movie %>% 
   html_node("strong span") %>%
-  html_text() %>%
-  as.numeric()
+  html_text()# %>%
+  # as.numeric()
 rating
 ```
-
 
 `rvest` by the example (3): keep parsing
 ==========================================
 
-- Use a similar process to extract the cast, using `html_nodes()` to find all nodes that match the selector:
+- We can use a similar process to extract the images:
+
+```{r eval=FALSE}
+poster <- lego_movie %>%
+  html_nodes(".poster img") %>%
+  html_attr("src")
+poster
+```
+
+`rvest` by the example (4): managing the unexpected
+======================================================
+
+- Imagine we want to use a similar process to extract the cast, using `html_nodes()` to find all nodes that match the selector:
+
+    + This example is based on the original "selectorgadget" vignette which used ".itemprop" as selector name to recover the names of the cast.
+    + It seems that the wep page may have changed and this selector is not used anymore.
+    + The item we look for is within a table so a reasonable selector is "td a", although it returns more contents than desired.
+    + An alternative is to use "htmltable()" to recover the table that contains the cast.
+
+Extract cast names using `html_nodes()` and selectors
+======================================================
 
 ```{r eval=FALSE}
 cast <- lego_movie %>%
@@ -179,22 +198,26 @@ cast
 Now we need to extract and clean the names.
 Notice that we have selected several table's contents. An alternative would have been to start extracting the tables.
 
-```{r}
-library(stringi)
-ambNom<- stri_locate(cast, regex="\\n")
-namesPos <- which(!is.na(ambNom[,1]))
-names<-cast[namesPos]
-names<- names[1:15]
-```
-
-- Or we can extract the image:
-
 ```{r eval=FALSE}
-poster <- lego_movie %>%
-  html_nodes(".poster img") %>%
-  html_attr("src")
-poster
+library(stringi)
+castNames <- cast %>% 
+  stri_locate(regex="\\n") 
+namesPos<-which(!is.na(castNames[1:44,1]))
+names<-cast[namesPos]
+castNames2 <- substring(names,2, nchar(names)-1 )
+castNames2
 ```
+
+Extract cast names using `html_tables()`
+======================================================
+```{r eval=FALSE}
+require(rvest)
+tables <- html_table(lego_movie, fill = TRUE) #Parses tables into data frames
+castTable<- tables[[1]]
+castNames3 <- as.character(castTable[2:16,2])
+castNames3
+```
+
 
 It's your turn now!
 ====================

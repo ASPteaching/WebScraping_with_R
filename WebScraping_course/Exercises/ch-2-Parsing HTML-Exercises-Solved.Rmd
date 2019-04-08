@@ -41,7 +41,7 @@ Extract all the information load on table.
 ### Solution 1
 
 ```{r}
-library(rvest)
+require(rvest)
 url<- 'https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11'
 # url='http://statbel.fgov.be/en/statistics/figures/economy/indicators/prix_prod_con/'
 
@@ -52,6 +52,16 @@ M  <- rbind(rep(NA,5),M)
 M <- cbind(NAMES[7:20],M)
 names(M) = NAMES[1:6]
 ```
+An alernative approch is using `html_table` function
+
+```{r}
+require(rvest)
+url<- 'https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11'
+page <- read_html (url) 
+myTables <-html_table(page, fill = TRUE) 
+M2<- myTables[[1]]
+```
+The process seems easier to do using `html_table`
 
 ## Exercise 2
 
@@ -62,12 +72,22 @@ Extract all the papers names, from 001-30 to 268-30
 HINT: Use selectorgagdget to see that selector `cite` is associated with the paper titles.
 
 ```{r eval=FALSE}
-url='http://www2.sas.com/proceedings/sugi30/toc.html'
-names=read_html(url)%>%html_nodes('cite')%>%html_text()
+url<- 'http://www2.sas.com/proceedings/sugi30/toc.html'
+names <- read_html(url) %>% 
+  html_nodes('cite') %>% 
+  html_text() # html_attr('href')
 names[1:6]
 
 ```
 
+```{r eval=FALSE}
+url<- 'http://www2.sas.com/proceedings/sugi30/toc.html'
+urls <- read_html(url) %>% 
+  html_nodes('cite') %>% 
+  html_attr('href')
+urls[1:6]
+
+```
 
 
 ## Exercise 3
@@ -77,10 +97,15 @@ Consider the url 'http://www.gibbon.se/Retailer/Map.aspx?SectionId=832'
 Extract all the options (Countries) availables on select button.
 
 ```{r eval=FALSE}
-url='http://www.gibbon.se/Retailer/Map.aspx?SectionId=832'
-countries=read_html(url)%>%html_nodes('#ctl00_ContentPlaceHolder1__countries')%>%html_children()%>%html_text()
+url <- 'http://www.gibbon.se/Retailer/Map.aspx?SectionId=832'
+countries <- read_html (url)  %>%
+  html_nodes('#ctl00_ContentPlaceHolder1__countries') %>% 
+  html_children() %>% 
+  html_text()
 countries
 ```
+
+Notice that once we have the right node we access the text in children nodes using `html_children`
 
 ## Exercise 4
 
@@ -88,10 +113,18 @@ Consider the url 'http://r-exercises.com/start-here-to-learn-r/'
 
 Extract *all the topics* available on the url.
 
+- Looking at the page contents we realize that "topics" appear in bold while subtopics don't.
+- We use this characteristic to make three _nested_ calls to `html_nodes()` in order to recover these "artificial" subheadings 
+- _the process would have been easier if the page developer had decided to give these headers a format using css but it's her/his decision_
+
 ```{r eval=FALSE}
-url='http://www.r-exercises.com/start-here-to-learn-r/'
-topics=read_html(url)%>%html_nodes('a')%>%html_text()
-topics[23:33]
+url <- 'http://www.r-exercises.com/start-here-to-learn-r/'
+topics <- read_html(url) %>% 
+  html_nodes('p') %>% 
+  html_nodes('strong') %>% 
+  html_nodes('a') %>% 
+  html_text()
+topics[1:20]
 ```
 
 ## Exercise 5
@@ -101,14 +134,11 @@ Consider the url 'http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-R
 Extract all inmobiliaries names published on first page.
 
 ```{r eval=FALSE}
-url='http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html'
-names=read_html(url)%>%html_nodes('a')%>%html_text()
-First=grep('UEMME',names)
-Last=max(grep('RE/MAX',names))
-LIST=unique(names[First:Last])
-LIST=LIST[-2]
-LIST=LIST[-2]
-LIST[1:5]
+url<- 'http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html'
+names <- read_html(url) %>% 
+  html_nodes('h4') %>% 
+  html_nodes('a') %>% 
+  html_text()
 ```
 
 
@@ -117,6 +147,8 @@ LIST[1:5]
 Consider the url='http://www.dictionary.com/browse/' and the words 'handy','whisper','lovely','scrape'.
 
 Build a data frame, where the first variables is "Word" and the second variables is "definitions". Scrape the definitions from the url.
+
+_This exercise does not work  in its current form because the page has been changed_
 
 ```{r eval=FALSE}
 word=c('handy','whisper','lovely','scrape')

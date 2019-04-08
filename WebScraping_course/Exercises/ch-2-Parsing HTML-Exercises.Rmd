@@ -22,6 +22,10 @@ require(rvest)
 
 # Scraping exercises
 
+This page contains several scraping exercises inspired, that is, copied, from [https://www.r-bloggers.com/web-scraping-exercises/](Web Scraping Exercises) also available in [https://www.r-exercises.com/start-here-to-learn-r/](https://www.r-exercises.com/start-here-to-learn-r/).
+
+Most of the code, however, has been changed because, as time goes by, the web content is modified and old code does not work anymore.
+
 Remember
 
 1. Start any exercise looking the website you are asked to scrap.
