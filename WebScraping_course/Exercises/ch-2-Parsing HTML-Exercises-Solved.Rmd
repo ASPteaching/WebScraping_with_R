@@ -38,7 +38,6 @@ Consider the url 'https://statbel.fgov.be/en/themes/indicators/prices/service-pr
 
 Extract all the information load on table.
 
-### Solution 1
 
 ```{r}
 require(rvest)
@@ -166,6 +165,70 @@ defs=c(defs,def)
 }
 s=data.frame(cbind(word,defs))
 s[1:2,] 
+```
+
+## Exercise 7
+
+- Write a script to find out which actor appears in  higher number of Star War movies.
+
+- Hint: The idea is similar to the previous exercise but with a litlle more work you can 
+
+1. Start in a page that gives you access to the list of Star Wars Films (try googling "Star Wars IMDB")
+2. From here write a function to extract the authors list from an IMDB whose URL is providd
+3. Apply the function to the URLs list and
+4. Tabulate or plot
+
+```{r}
+library(rvest)
+# Start googling "list of all star war films IMDB"
+# Select one page, for example: https://www.imdb.com/list/ls069505240/
+
+star_wars_movies <- read_html("https://www.imdb.com/list/ls069505240/")
+
+# Inspect the page to find appropriate selectors for each movie's urls
+# Notice that we don't have to recover the node's text but the url, so we use "html_attr"
+# Selection with selector gadget can yield distinct results because these are but "guesses"
+
+# selectorDescription <- ".mode-detail:nth-child(2) a"
+selectorDescription <- "h3 a"
+
+url_film <- star_wars_movies %>% 
+  html_nodes(selectorDescription) %>% 
+  html_attr('href')
+
+# Inspect the object. 
+# First ten items correspond to titles but they miss the first part of the url
+
+urls <- character()
+for(i in 1:10){
+  urls[i] <- paste0("https://www.imdb.com",url_film[i])
+}
+
+# Now we have the lists of pages that have to be scrapped 
+# we iterate with the code used in the example
+
+# lego_movie <- read_html("http://www.imdb.com/title/tt1490017/")
+# tables <- html_table(lego_movie, fill = TRUE) #Parses tables into data frames
+# castTable<- tables[[1]]
+# castNames3 <- as.character(castTable[-1,2])
+
+cast = list()
+n = 1
+for(i in urls){
+  film <- read_html(i)
+  tables <- html_table(film, fill = TRUE)
+  castTable<- tables[[1]]
+  castNames <- as.character(castTable[-1,2])
+  cast[[n]] <- castNames
+  n = n + 1
+}
+
+# To complete the process joint the lists with 'unlist', tabulate and sort
+
+sortedCast <- sort(table(unlist(cast)), dec=TRUE)
+sortedCast[1:5]
+# And the winner is: "Actors[1]"
+
 ```
 
 

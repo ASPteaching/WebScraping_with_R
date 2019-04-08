@@ -75,3 +75,13 @@ Consider the url='http://www.dictionary.com/browse/' and the words 'handy','whis
 
 Build a data frame, where the first variables is "Word" and the second variables is "definitions". Scrape the definitions from the url.
 
+## Exercise 7 (not in the original list)
+
+- Write a script to find out which actor appears in  higher number of Star War movies.
+
+- Hint: The idea is similar to the previous exercise but with a litlle more work you can 
+
+1. Start in a page that gives you access to the list of Star Wars Films (try googling "Star Wars IMDB")
+2. From here write a function to extract the authors list from an IMDB whose URL is providd
+3. Apply the function to the URLs list and
+4. Tabulate or plot

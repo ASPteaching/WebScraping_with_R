@@ -198,14 +198,13 @@ $(document).ready(function () {
 <div id="TOC">
 <ul>
 <li><a href="#scraping-exercises">Scraping exercises</a><ul>
-<li><a href="#exercise-1">Exercise 1</a><ul>
-<li><a href="#solution-1">Solution 1</a></li>
-</ul></li>
+<li><a href="#exercise-1">Exercise 1</a></li>
 <li><a href="#exercise-2">Exercise 2</a></li>
 <li><a href="#exercise-3">Exercise 3</a></li>
 <li><a href="#exercise-4">Exercise 4</a></li>
 <li><a href="#exercise-5">Exercise 5</a></li>
 <li><a href="#exercise-6">Exercise 6</a></li>
+<li><a href="#exercise-7">Exercise 7</a></li>
 </ul></li>
 </ul>
 </div>
@@ -224,9 +223,7 @@ $(document).ready(function () {
 <h2>Exercise 1</h2>
 <p>Consider the url ‘<a href="https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11" class="uri">https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11</a>’</p>
 <p>Extract all the information load on table.</p>
-<div id="solution-1" class="section level3">
-<h3>Solution 1</h3>
-<pre class="r"><code>&gt; library(rvest)
+<pre class="r"><code>&gt; require(rvest)
 &gt; url&lt;- 'https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11'
 &gt; # url='http://statbel.fgov.be/en/statistics/figures/economy/indicators/prix_prod_con/'
 &gt; 
@@ -236,50 +233,74 @@ $(document).ready(function () {
 &gt; M  &lt;- rbind(rep(NA,5),M)
 &gt; M &lt;- cbind(NAMES[7:20],M)
 &gt; names(M) = NAMES[1:6]</code></pre>
-</div>
+<p>An alernative approch is using <code>html_table</code> function</p>
+<pre class="r"><code>&gt; require(rvest)
+&gt; url&lt;- 'https://statbel.fgov.be/en/themes/indicators/prices/service-price-indices#panel-11'
+&gt; page &lt;- read_html (url) 
+&gt; myTables &lt;-html_table(page, fill = TRUE) 
+&gt; M2&lt;- myTables[[1]]</code></pre>
+<p>The process seems easier to do using <code>html_table</code></p>
 </div>
 <div id="exercise-2" class="section level2">
 <h2>Exercise 2</h2>
 <p>Consider the url ‘<a href="http://www2.sas.com/proceedings/sugi30/toc.html" class="uri">http://www2.sas.com/proceedings/sugi30/toc.html</a>’</p>
 <p>Extract all the papers names, from 001-30 to 268-30</p>
 <p>HINT: Use selectorgagdget to see that selector <code>cite</code> is associated with the paper titles.</p>
-<pre class="r"><code>&gt; url='http://www2.sas.com/proceedings/sugi30/toc.html'
-&gt; names=read_html(url)%&gt;%html_nodes('cite')%&gt;%html_text()
+<pre class="r"><code>&gt; url&lt;- 'http://www2.sas.com/proceedings/sugi30/toc.html'
+&gt; names &lt;- read_html(url) %&gt;% 
++   html_nodes('cite') %&gt;% 
++   html_text() # html_attr('href')
 &gt; names[1:6]</code></pre>
+<pre class="r"><code>&gt; url&lt;- 'http://www2.sas.com/proceedings/sugi30/toc.html'
+&gt; urls &lt;- read_html(url) %&gt;% 
++   html_nodes('cite') %&gt;% 
++   html_attr('href')
+&gt; urls[1:6]</code></pre>
 </div>
 <div id="exercise-3" class="section level2">
 <h2>Exercise 3</h2>
 <p>Consider the url ‘<a href="http://www.gibbon.se/Retailer/Map.aspx?SectionId=832" class="uri">http://www.gibbon.se/Retailer/Map.aspx?SectionId=832</a>’</p>
 <p>Extract all the options (Countries) availables on select button.</p>
-<pre class="r"><code>&gt; url='http://www.gibbon.se/Retailer/Map.aspx?SectionId=832'
-&gt; countries=read_html(url)%&gt;%html_nodes('#ctl00_ContentPlaceHolder1__countries')%&gt;%html_children()%&gt;%html_text()
+<pre class="r"><code>&gt; url &lt;- 'http://www.gibbon.se/Retailer/Map.aspx?SectionId=832'
+&gt; countries &lt;- read_html (url)  %&gt;%
++   html_nodes('#ctl00_ContentPlaceHolder1__countries') %&gt;% 
++   html_children() %&gt;% 
++   html_text()
 &gt; countries</code></pre>
+<p>Notice that once we have the right node we access the text in children nodes using <code>html_children</code></p>
 </div>
 <div id="exercise-4" class="section level2">
 <h2>Exercise 4</h2>
 <p>Consider the url ‘<a href="http://r-exercises.com/start-here-to-learn-r/" class="uri">http://r-exercises.com/start-here-to-learn-r/</a>’</p>
 <p>Extract <em>all the topics</em> available on the url.</p>
-<pre class="r"><code>&gt; url='http://www.r-exercises.com/start-here-to-learn-r/'
-&gt; topics=read_html(url)%&gt;%html_nodes('a')%&gt;%html_text()
-&gt; topics[23:33]</code></pre>
+<ul>
+<li>Looking at the page contents we realize that “topics” appear in bold while subtopics don’t.</li>
+<li>We use this characteristic to make three <em>nested</em> calls to <code>html_nodes()</code> in order to recover these “artificial” subheadings</li>
+<li><em>the process would have been easier if the page developer had decided to give these headers a format using css but it’s her/his decision</em></li>
+</ul>
+<pre class="r"><code>&gt; url &lt;- 'http://www.r-exercises.com/start-here-to-learn-r/'
+&gt; topics &lt;- read_html(url) %&gt;% 
++   html_nodes('p') %&gt;% 
++   html_nodes('strong') %&gt;% 
++   html_nodes('a') %&gt;% 
++   html_text()
+&gt; topics[1:20]</code></pre>
 </div>
 <div id="exercise-5" class="section level2">
 <h2>Exercise 5</h2>
 <p>Consider the url ‘<a href="http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html" class="uri">http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html</a>’</p>
 <p>Extract all inmobiliaries names published on first page.</p>
-<pre class="r"><code>&gt; url='http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html'
-&gt; names=read_html(url)%&gt;%html_nodes('a')%&gt;%html_text()
-&gt; First=grep('UEMME',names)
-&gt; Last=max(grep('RE/MAX',names))
-&gt; LIST=unique(names[First:Last])
-&gt; LIST=LIST[-2]
-&gt; LIST=LIST[-2]
-&gt; LIST[1:5]</code></pre>
+<pre class="r"><code>&gt; url&lt;- 'http://www.immobiliare.it/Roma/agenzie_immobiliari_provincia-Roma.html'
+&gt; names &lt;- read_html(url) %&gt;% 
++   html_nodes('h4') %&gt;% 
++   html_nodes('a') %&gt;% 
++   html_text()</code></pre>
 </div>
 <div id="exercise-6" class="section level2">
 <h2>Exercise 6</h2>
 <p>Consider the url=‘<a href="http://www.dictionary.com/browse/" class="uri">http://www.dictionary.com/browse/</a>’ and the words ‘handy’,‘whisper’,‘lovely’,‘scrape’.</p>
 <p>Build a data frame, where the first variables is “Word” and the second variables is “definitions”. Scrape the definitions from the url.</p>
+<p><em>This exercise does not work in its current form because the page has been changed</em></p>
 <pre class="r"><code>&gt; word=c('handy','whisper','lovely','scrape')
 &gt; defs=c()
 &gt; for(i in 1:4)
@@ -295,6 +316,73 @@ $(document).ready(function () {
 + }
 &gt; s=data.frame(cbind(word,defs))
 &gt; s[1:2,] </code></pre>
+</div>
+<div id="exercise-7" class="section level2">
+<h2>Exercise 7</h2>
+<ul>
+<li><p>Write a script to find out which actor appears in higher number of Star War movies.</p></li>
+<li><p>Hint: The idea is similar to the previous exercise but with a litlle more work you can</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Start in a page that gives you access to the list of Star Wars Films (try googling “Star Wars IMDB”)</li>
+<li>From here write a function to extract the authors list from an IMDB whose URL is providd</li>
+<li>Apply the function to the URLs list and</li>
+<li>Tabulate or plot</li>
+</ol>
+<pre class="r"><code>&gt; library(rvest)
+&gt; # Start googling &quot;list of all star war films IMDB&quot;
+&gt; # Select one page, for example: https://www.imdb.com/list/ls069505240/
+&gt; 
+&gt; star_wars_movies &lt;- read_html(&quot;https://www.imdb.com/list/ls069505240/&quot;)
+&gt; 
+&gt; # Inspect the page to find appropriate selectors for each movie's urls
+&gt; # Notice that we don't have to recover the node's text but the url, so we use &quot;html_attr&quot;
+&gt; # Selection with selector gadget can yield distinct results because these are but &quot;guesses&quot;
+&gt; 
+&gt; # selectorDescription &lt;- &quot;.mode-detail:nth-child(2) a&quot;
+&gt; selectorDescription &lt;- &quot;h3 a&quot;
+&gt; 
+&gt; url_film &lt;- star_wars_movies %&gt;% 
++   html_nodes(selectorDescription) %&gt;% 
++   html_attr('href')
+&gt; 
+&gt; # Inspect the object. 
+&gt; # First ten items correspond to titles but they miss the first part of the url
+&gt; 
+&gt; urls &lt;- character()
+&gt; for(i in 1:10){
++   urls[i] &lt;- paste0(&quot;https://www.imdb.com&quot;,url_film[i])
++ }
+&gt; 
+&gt; # Now we have the lists of pages that have to be scrapped 
+&gt; # we iterate with the code used in the example
+&gt; 
+&gt; # lego_movie &lt;- read_html(&quot;http://www.imdb.com/title/tt1490017/&quot;)
+&gt; # tables &lt;- html_table(lego_movie, fill = TRUE) #Parses tables into data frames
+&gt; # castTable&lt;- tables[[1]]
+&gt; # castNames3 &lt;- as.character(castTable[-1,2])
+&gt; 
+&gt; cast = list()
+&gt; n = 1
+&gt; for(i in urls){
++   film &lt;- read_html(i)
++   tables &lt;- html_table(film, fill = TRUE)
++   castTable&lt;- tables[[1]]
++   castNames &lt;- as.character(castTable[-1,2])
++   cast[[n]] &lt;- castNames
++   n = n + 1
++ }
+&gt; 
+&gt; # To complete the process joint the lists with 'unlist', tabulate and sort
+&gt; 
+&gt; sortedCast &lt;- sort(table(unlist(cast)), dec=TRUE)
+&gt; sortedCast[1:5]</code></pre>
+<pre><code>
+Anthony Daniels        Frank Oz   Carrie Fisher     Mark Hamill 
+              7               6               5               5 
+  Harrison Ford 
+              4 </code></pre>
+<pre class="r"><code>&gt; # And the winner is: &quot;Actors[1]&quot;</code></pre>
 </div>
 </div>
 
