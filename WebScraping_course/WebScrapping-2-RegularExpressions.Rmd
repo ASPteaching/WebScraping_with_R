@@ -102,10 +102,9 @@ Forming regular expressions
 
 - Regex patterns consist of a combination of *alphanumeric characters* as well as *special characters*.
     + e.g. [a-zA-Z0-9 .]*
-- A regex pattern can be as simple as a single character
+- A regex pattern can be as simple as a single character.
 - But it can also be formed by several characters with a more complex structure.
-
-- Regular expressions are constructed from 3 things:
+- Regular expressions are constructed from 3 types of components:
     + __*Literal characters*__ are matched only by the character itself.
     + __*Character classes*__, matched by any single member of the specified class
     + __*Modifers*__ that operate on literal characters, character classes, or combinations of the two.
@@ -189,7 +188,7 @@ Refining the search for a character (1) Specifying location
 ===========================================================
 - Sometimes we do not simply care about finding a match anywhere in a string but are concerned about the *specific location* within a string.
 - There are two simple additions we can make to our regular expression to specify locations. 
-    + The caret symbol (ˆ) at the beginning of a regular expression marks the beginning of a string
+    + The caret symbol (^) at the beginning of a regular expression marks the beginning of a string
     + The dollar symbol ($) at the end marks the end.
   3 Thus,
 extracting 2 from our running example will return a 2.
