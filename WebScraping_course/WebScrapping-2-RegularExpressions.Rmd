@@ -9,12 +9,14 @@ output:
 css: myStyles.css
 footer: "Regular expressions"
 keep_md: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setLicense, child = 'license.Rmd'}
 ```
 
-```{r disclaimer, child = 'disclaimer.Rmd'}
+```{r disclaimer, child = 'disclaimerStrings.Rmd'}
 ```
 
 Introduction
@@ -184,6 +186,25 @@ require(stringr)
 str_extract_all(example.obj,"e")
 ```
 
+`str_extract` vs `grep`
+=============================
+
+- Observe the different result:
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_extract(x, "an")
+grep("an", x, value = TRUE)
+```
+
+- To obtain the same result as with grep one can use `str_detect`
+
+```{r}
+str_subset(x,"an")
+```
+
+
+
 Refining the search for a character (1) Specifying location
 ===========================================================
 - Sometimes we do not simply care about finding a match anywhere in a string but are concerned about the *specific location* within a string.
@@ -290,7 +311,7 @@ Syntax (6): Operators examples
 ===============================
 
 ```{r eval=FALSE}
-(strings <- c("^ab", "ab", "abc", "abd", "abe", "ab 12"))
+(strings <- c("^ab", "ab", "abc", "abd", "abe", "ab 12", "acb"))
 grep("ab.", strings, value = TRUE)
 grep("ab[c-e]", strings, value = TRUE)
 grep("ab[^c]", strings, value = TRUE)

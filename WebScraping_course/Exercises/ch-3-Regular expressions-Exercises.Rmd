@@ -21,13 +21,16 @@ require(stringr)
 
 ## Exercise 1
 
-- Create a variable called `text1` and populate it with the value “The current year is 2017”
+- Create a variable called `text1` and populate it with the value “The current year is 2019”
 - Create a variable called `my_pattern` and implement the required pattern for finding *any digit* in the variable `text1`.
 - Use function `grepl` to verify if there is a digit in the string variable.
+
 ```{r exercise1}
-text1 <- "The current year is 2017"
+text1 <- "The current year is 2019 but next one will be 2020"
 my_pattern <- "[A-z]*[0-9]+[A-z]*"
-grepl(my_pattern,text1)
+str_extract_all(text1, my_pattern)
+my_pattern2 <-  "[0-9]+"
+str_extract_all(text1, my_pattern2)
 ```
 
 
