@@ -12,3 +12,4 @@ Disclaimer and acknowledgements
 
     + [Handling Strings with R](https://www.gastonsanchez.com/r4strings/) by Gaston Sanchez and
     + [R for Data Science (Strings chapter)](https://r4ds.had.co.nz/strings.html) by Hadley Wickham and Garret Grolemund.
+    + [tidyverse vignette on Regular expressions](https://stringr.tidyverse.org/articles/regular-expressions.html)

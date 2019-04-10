@@ -27,9 +27,10 @@ require(stringr)
 
 ```{r exercise1}
 text1 <- "The current year is 2019 but next one will be 2020"
-my_pattern <- "[A-z]*[0-9]+[A-z]*"
+my_pattern <- "[0-9]+"
+my_pattern2 <-"[0-9]"
+grepl(my_pattern2,text1 )
 str_extract_all(text1, my_pattern)
-my_pattern2 <-  "[0-9]+"
 str_extract_all(text1, my_pattern2)
 ```
 
@@ -39,6 +40,7 @@ str_extract_all(text1, my_pattern2)
 - Use function `gregexpr` to find all the positions in `text1` where there is a digit.
 - Place the results in a variable called *string_position*
 - Can you obtain the same result using a function from the `stringr` package?
+
 ```{r exercise2}
 string_position <- gregexpr(my_pattern,text1)
 string_position[[1]][1:length(string_position[[1]])]

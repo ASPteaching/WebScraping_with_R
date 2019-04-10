@@ -111,6 +111,19 @@ Forming regular expressions
     + __*Character classes*__, matched by any single member of the specified class
     + __*Modifers*__ that operate on literal characters, character classes, or combinations of the two.
     
+String functions and patterns
+=============================
+
+- Notice that the enumeration above relies on two types of functions
+    + Standard `base` R functions
+    + Functions from the `stringr` package, developed for extending and simplifying R base functionalities.
+- Information is available:
+    + For base functions at:
+[ENDMEMO/Regular Expressions in R](http://www.endmemo.com/program/R/grep.php)
+    + For `stringr` at: [stringi regular expressions vignette](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html)
+- All the functions require a pattern to describe the set of strings on which they operate.
+- Regular expressions _*are not the functions but the rules used to build the patterns*_.
+
 Common Regex tasks
 ===================
 
@@ -121,23 +134,18 @@ Common Regex tasks
     + `grep(..., value = TRUE)`, 
     + `stringr::str_extract()`, `stringr::str_extract_all()`     
 - **locate** pattern within a string, i.e. give the start position of matched patterns. 
-    +`regexpr()`, `gregexpr()`, 
-    + `stringr::str_locate()`, `string::str_locate_all()`     
+    + `regexpr()`, `gregexpr()`, 
+    + `stringr::str_locate()`, `string::str_locate_all()`    
+
+Common Regex tasks (continued)
+===================    
+    
 - **replace** a pattern: 
     + `sub()`, `gsub()`, 
     + `stringr::str_replace()`, `stringr::str_replace_all()`     
 - **split a string** using a pattern: 
     + `strsplit()`, 
     + `stringr::str_split()`     
-
-String functions and patterns
-=============================
-
-- Notice that the enumeration above relies on two types of functions
-    + Standard `base` R functions
-    + Functions from the `stringr` package, developed for extending and simplifying R base functionalities.
-- All the functions require a pattern to describe the set of strings on which they operate.
-- Regular expressions _*are not the functions but the rules used to build the patterns*_.
     
 Regular expression syntax
 ==========================

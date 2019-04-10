@@ -201,6 +201,23 @@ files &lt;-<span class="st"> </span><span class="kw">list.files</span>()
 </ul></li>
 </ul>
 </div>
+<div id="string-functions-and-patterns" class="slide section level1">
+<h1>String functions and patterns</h1>
+<ul>
+<li>Notice that the enumeration above relies on two types of functions
+<ul>
+<li>Standard <code>base</code> R functions</li>
+<li>Functions from the <code>stringr</code> package, developed for extending and simplifying R base functionalities.</li>
+</ul></li>
+<li>Information is available:
+<ul>
+<li>For base functions at: <a href="http://www.endmemo.com/program/R/grep.php">ENDMEMO/Regular Expressions in R</a></li>
+<li>For <code>stringr</code> at: <a href="https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html">stringi regular expressions vignette</a></li>
+</ul></li>
+<li>All the functions require a pattern to describe the set of strings on which they operate.</li>
+<li>Regular expressions <em><em>are not the functions but the rules used to build the patterns</em></em>.</li>
+</ul>
+</div>
 <div id="common-regex-tasks" class="slide section level1">
 <h1>Common Regex tasks</h1>
 <ul>
@@ -215,11 +232,16 @@ files &lt;-<span class="st"> </span><span class="kw">list.files</span>()
 <li><code>stringr::str_extract()</code>, <code>stringr::str_extract_all()</code><br />
 </li>
 </ul></li>
-<li><strong>locate</strong> pattern within a string, i.e. give the start position of matched patterns. +<code>regexpr()</code>, <code>gregexpr()</code>,
+<li><strong>locate</strong> pattern within a string, i.e. give the start position of matched patterns.
 <ul>
-<li><code>stringr::str_locate()</code>, <code>string::str_locate_all()</code><br />
-</li>
+<li><code>regexpr()</code>, <code>gregexpr()</code>,</li>
+<li><code>stringr::str_locate()</code>, <code>string::str_locate_all()</code></li>
 </ul></li>
+</ul>
+</div>
+<div id="common-regex-tasks-continued" class="slide section level1">
+<h1>Common Regex tasks (continued)</h1>
+<ul>
 <li><strong>replace</strong> a pattern:
 <ul>
 <li><code>sub()</code>, <code>gsub()</code>,</li>
@@ -231,18 +253,6 @@ files &lt;-<span class="st"> </span><span class="kw">list.files</span>()
 <li><code>strsplit()</code>,</li>
 <li><code>stringr::str_split()</code></li>
 </ul></li>
-</ul>
-</div>
-<div id="string-functions-and-patterns" class="slide section level1">
-<h1>String functions and patterns</h1>
-<ul>
-<li>Notice that the enumeration above relies on two types of functions
-<ul>
-<li>Standard <code>base</code> R functions</li>
-<li>Functions from the <code>stringr</code> package, developed for extending and simplifying R base functionalities.</li>
-</ul></li>
-<li>All the functions require a pattern to describe the set of strings on which they operate.</li>
-<li>Regular expressions <em><em>are not the functions but the rules used to build the patterns</em></em>.</li>
 </ul>
 </div>
 <div id="regular-expression-syntax" class="slide section level1">
