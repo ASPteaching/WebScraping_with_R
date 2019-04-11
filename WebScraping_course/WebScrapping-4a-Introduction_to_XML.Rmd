@@ -7,7 +7,7 @@ output:
     fig_width: 7
     fig_height: 6
 css: myStyles.css
-footer: "Introduction to CML"
+footer: "Introduction to XML"
 keep_md: true
 highlight: pygments
 editor_options: 
@@ -17,7 +17,7 @@ editor_options:
 ```{r setLicense, child = 'license.Rmd'}
 ```
 
-```{r disclaimer, child = 'disclaimer.Rmd'}
+```{r disclaimer, child = 'disclaimerXML.Rmd'}
 ```
 
 ```{r setup, include=FALSE}
@@ -108,7 +108,7 @@ A minimal example
 ==================
 
 <div align="center">
-<img src="images/willhunting1.jpg" width="80%" style="float:centered"/>
+<img src="images/willhunting1.jpg" width="60%" style="float:centered"/>
 </div>
 
 A minimal example
@@ -167,8 +167,8 @@ Improving the example (2)
 # </movie>
 ```
 
-- an xml element may contain other elements.
-- movie contains several elements: **title, director, year, genre**.
+- An XML element may contain other elements.
+- "movie" contains several elements: **title, director, year, genre**.
 
 Improving the example (3)
 =========================

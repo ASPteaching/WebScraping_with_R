@@ -17,7 +17,7 @@ editor_options:
 ```{r setLicense, child = 'license.Rmd'}
 ```
 
-```{r disclaimer, child = 'disclaimer.Rmd'}
+```{r disclaimer, child = 'disclaimerXML.Rmd'}
 ```
 
 
@@ -63,7 +63,7 @@ The `xmlParse()` function
 - The XML package comes with the "almighty"" parser function `xmlParse()` that deeply simplifies the process
 - Main input for `xmlParse()` is a file: either a local file, a complete URL or a text string:
     + ex1: xmlParse("Documents/file.xml")
-    + ex2: xmlParse("http://www.xyz.com/some file.xml")
+    + ex2: xmlParse("http://www.xyz.com/somefile.xml")
     + ex3: xmlParse(xml_string, asText=TRUE)
 - the rest of the 20+ parameters are optional, and provide
 options to control the parsing procedure.
