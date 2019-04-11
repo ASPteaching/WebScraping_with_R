@@ -122,8 +122,8 @@ Preparing data acquisition from twitter
 Authentication (1): Access tokens
 =================================
 
-- In order to be able to recover tweets "massively" we nned to ba granted access, whas is described as "authentication".
-- For this you need the following objects from the "keys and access token" tab in your developers account
+- In order to be able to recover tweets "massively" we need to be granted access. This is called "authentication".
+- The following objects from the "keys and access token" tab in the developers account are provided after an application has been created
     + key <- "your API key from twitter"
     + secret <- "your Secret key from twitter"
     + secrettk <- "Access Token Secret from Twitter"
@@ -177,41 +177,58 @@ Package overview
  4. Timelines (streams of tweets):  `userTimeline()`
  5. Explore Trends:  `getTrends()`
 
-
 An overview of the process
 ===================================================
 
-- A typical information extraction process may be the following
+- A typical information extraction process may be the following:
+
 1. Extract tweets and followers from the Twitter website with R
 and the `twitteR` package.
 2. Clean text by removing punctuations, numbers, hyperlinks and stop words.
+
 - This will be followed by *a variety* of possible analyses:
+
 3. Build a term-document matrix and make a Word Cloud.
 4. Analyse topics with the `topicmodels` package.
 5. Analyse sentiment with the `sentiment140` package.
 6. Analyse following/followed and retweeting relationships with the `igraph` package
 
-Extract tweets
+1. Extract tweets
 ===================
 
 - Start setting twitter and authenticating as described in the previous steps.
 
 - Information acquisition with the `twitteR` package is based on the `searchTwitter` function.
-- It is recommended to read the official Twitter Search API documentation (https://dev.twitter.com/rest/public/search)[https://dev.twitter.com/rest/public/search]
-- You will find things such as: *The Twitter Search API searches against a sampling of recent Tweets published in the past 7 days*. So do not try to llok for tweets older than a week!
+
+- It is recommended to read the official Twitter Search API documentation [https://dev.twitter.com/rest/public/search](https://dev.twitter.com/rest/public/search)
+
+    + You will find things such as: *The Twitter Search API searches against a sampling of recent Tweets published in the past 7 days*. So do not try to llok for tweets older than a week!
+
+1. Extract tweets (continued)
+===============================
+
+- We start with a simple search on a "popular" topic
 
 ```{r eval=FALSE}
 require(twitteR)
-search.string <- "#Trump"
+search.string <- "#Brexit"
 no.of.tweets <- 1000
-myTweets <- searchTwitter(search.string, n=no.of.tweets, 
-                        since='2018-06-22', until='2018-06-28', lang="en")
-head(myTweets)
-save(myTweets, file="myTweets.Rda")
+aTopicTweets <- searchTwitter(search.string, n=no.of.tweets, lang="en",
+                          since='2019-04-01', until='2019-04-10')
+head(aTopicTweets)
+save(aTopicTweets, file="aTopicTweets.Rda")
+```
+
+Alternatively we can search (at most) recent tweets from a given user.
+
+```{r eval=FALSE}
+aUser <- "nntaleb" # f2harrell
+aUserTweets <- userTimeline(aUser, n = 3200)
+save(aUserTweets, file="aUserTweets.Rda")
 ```
 
 
-Clean up text (1) 
+2. Clean up text (1) 
 =================
 
 - The product of the scraping process is a list with the "raw" content of each tweet.
@@ -219,14 +236,14 @@ Clean up text (1)
 - Although this may be done using the `tm` package it may be clearer to understand if we "simply" rely on regular expressions.
 
 
-Code for cleaning tweets
+2. Clean up text (1b): Code
 ===========================
 
 ```{r regexClean}
 require(twitteR)
 showTweets <- TRUE
-if (!exists("myTweets")) load("myTweets.Rda")
- tweets.text <- sapply(myTweets, function(x) x$getText())
+if (!exists("aTopicTweets")) load("aTopicTweets.Rda")
+ tweets.text <- sapply(aTopicTweets, function(x) x$getText())
  # Replace @UserName
  tweets.text <- gsub("@\\w+", "", tweets.text)
  # Remove punctuation
@@ -239,16 +256,16 @@ if (!exists("myTweets")) load("myTweets.Rda")
  tweets.text<-  gsub( '[^A-z0-9_]', ' ', tweets.text)
  # Set characters to lowercase
  tweets.text <- tolower(tweets.text)
-# Replace blank space (“rt”)
-tweets.text <- gsub("rt", "", tweets.text)
+ # Replace blank space (“rt”)
+ tweets.text <- gsub("rt", "", tweets.text)
  # Remove blank spaces at the beginning
  tweets.text <- gsub("^ ", "", tweets.text)
-# Remove blank spaces at the end
+ # Remove blank spaces at the end
  tweets.text <- gsub(" $", "", tweets.text)
  head(tweets.text)
 ```
 
-Clean the text (2): Remove "common words"
+2. Clean the text (2a): Remove "common words"
 =========================================
 
 - Once the text has been cleaned it may be "pruned" from words that are known to be non-relevant.
@@ -257,7 +274,7 @@ Clean the text (2): Remove "common words"
 - The `tm` package contains an instance of such list that can be recovered with the `stopwords` function.
 - The `tm` package represents texts as *collections of documents* which are called "corpus".
 
-Code for removing `stopwords`
+2. Clean the text (2b): Code for removing `stopwords`
 ==============================
 
 ```{r}
@@ -363,6 +380,7 @@ Using the function
 ===================
 
 - We are going to do sentiment analysis for a list of words that come from 4 tweeter searches.
+- alternatively, if we were in an election time we could compare tweets about parties.
 
 ```{r eval=FALSE}
 require(twitteR)
