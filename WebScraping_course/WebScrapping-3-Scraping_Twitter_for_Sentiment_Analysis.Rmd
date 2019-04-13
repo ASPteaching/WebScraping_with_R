@@ -253,7 +253,7 @@ if (!exists("aTopicTweets")) load("aTopicTweets.Rda")
  # Remove tabs
  tweets.text <- gsub("[ |\t]{2,}", "", tweets.text)
  # remove codes that are neither characters nor digits
- tweets.text<-  gsub( '[^A-z0-9_]', ' ', tweets.text)
+ tweets.text<-  gsub( '[^[:alnum:]_]', ' ', tweets.text)
  # Set characters to lowercase
  tweets.text <- tolower(tweets.text)
  # Replace blank space (“rt”)
