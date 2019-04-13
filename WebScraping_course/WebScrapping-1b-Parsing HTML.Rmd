@@ -234,6 +234,7 @@ It's your turn now!
 To learn more ...
 ==================
 - Additional tutorials on web scrapping based on the `rvest` package:
+    + https://jorgeromero.net/web-scraping-usando-r/
     + http://zevross.com/blog/2015/05/19/scrape-website-data-with-the-new-r-package-rvest/
     + https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/
     + https://www.datacamp.com/community/tutorials/r-web-scraping-rvest
